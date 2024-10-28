@@ -1,0 +1,344 @@
+{
+    "manager": {
+      "Name": "Admin",
+      "LastName": "Cen311",
+      "Email": "admincen311@example.com",
+      "Birthday": "1980-01-15",
+      "Username": "admin",
+      "Password": "admin123"
+    },
+    "clients": [
+      {
+        "Name": "Alice",
+        "LastName": "Smith",
+        "Email": "alice.smith@example.com",
+        "Birthday": "1995-03-20",
+        "Username": "alice95",
+        "Password": "password1",
+        "ID": 1,
+        "Books-liked": [1, 3],
+        "Books-purchased": [2]
+      },
+      {
+        "Name": "Bob",
+        "LastName": "Johnson",
+        "Email": "bob.johnson@example.com",
+        "Birthday": "1990-07-30",
+        "Username": "bob90",
+        "Password": "password2",
+        "ID": 2,
+        "Books-liked": [4, 7],
+        "Books-purchased": [1, 3]
+      },
+      {
+        "Name": "Charlie",
+        "LastName": "Brown",
+        "Email": "charlie.brown@example.com",
+        "Birthday": "1992-11-05",
+        "Username": "charlie92",
+        "Password": "password3",
+        "ID": 3,
+        "Books-liked": [5, 6],
+        "Books-purchased": []
+      },
+      {
+        "Name": "Daisy",
+        "LastName": "Williams",
+        "Email": "daisy.williams@example.com",
+        "Birthday": "1996-02-14",
+        "Username": "daisy96",
+        "Password": "password4",
+        "ID": 4,
+        "Books-liked": [2, 8],
+        "Books-purchased": [4]
+      },
+      {
+        "Name": "Eve",
+        "LastName": "Davis",
+        "Email": "eve.davis@example.com",
+        "Birthday": "1988-05-22",
+        "Username": "eve88",
+        "Password": "password5",
+        "ID": 5,
+        "Books-liked": [1, 9],
+        "Books-purchased": [6]
+      },
+      {
+        "Name": "Frank",
+        "LastName": "Martinez",
+        "Email": "frank.martinez@example.com",
+        "Birthday": "1991-09-10",
+        "Username": "frank91",
+        "Password": "password6",
+        "ID": 6,
+        "Books-liked": [],
+        "Books-purchased": [5]
+      },
+      {
+        "Name": "Grace",
+        "LastName": "Garcia",
+        "Email": "grace.garcia@example.com",
+        "Birthday": "1994-12-25",
+        "Username": "grace94",
+        "Password": "password7",
+        "ID": 7,
+        "Books-liked": [10],
+        "Books-purchased": []
+      },
+      {
+        "Name": "Hannah",
+        "LastName": "Anderson",
+        "Email": "hannah.anderson@example.com",
+        "Birthday": "1993-04-02",
+        "Username": "hannah93",
+        "Password": "password8",
+        "ID": 8,
+        "Books-liked": [3, 12],
+        "Books-purchased": [11]
+      },
+      {
+        "Name": "Ian",
+        "LastName": "Thomas",
+        "Email": "ian.thomas@example.com",
+        "Birthday": "1989-06-15",
+        "Username": "ian89",
+        "Password": "password9",
+        "ID": 9,
+        "Books-liked": [],
+        "Books-purchased": [8]
+      },
+      {
+        "Name": "Jasmine",
+        "LastName": "Taylor",
+        "Email": "jasmine.taylor@example.com",
+        "Birthday": "1990-08-28",
+        "Username": "jasmine90",
+        "Password": "password10",
+        "ID": 10,
+        "Books-liked": [2, 14],
+        "Books-purchased": []
+      }
+    ],
+    "books": [
+      {
+        "ID": 1,
+        "Title": "The Great Gatsby",
+        "Author": "F. Scott Fitzgerald",
+        "Genre": "Classic",
+        "Published Year": "1925",
+        "Description": "Set in the Roaring Twenties, 'The Great Gatsby' tells the story of the enigmatic Jay Gatsby and his obsession with the beautiful Daisy Buchanan. It captures the decadence and excess of the era while exploring themes of love, wealth, and the American Dream.",
+        "Price": 10.99,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.5,
+        "Reviews": [
+          {
+            "clientID": 1,
+            "review": "A beautifully written tale that captures the essence of a lost era. Gatsby's tragic love story is haunting."
+          },
+          {
+            "clientID": 3,
+            "review": "A classic that never gets old. Fitzgerald's prose is stunning, and the themes are still relevant today."
+          }
+        ],
+        "Likes-clients": [1, 3, 5]
+      },
+      {
+        "ID": 2,
+        "Title": "1984",
+        "Author": "George Orwell",
+        "Genre": "Dystopian",
+        "Published Year": "1949",
+        "Description": "In a totalitarian future where the Party scrutinizes human actions with ever-watchful Big Brother, Winston Smith dares to express his thoughts and seeks a revolution against the oppressive regime. '1984' is a chilling vision of a dystopian future that warns against the perils of absolute power.",
+        "Price": 9.99,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.7,
+        "Reviews": [
+          {
+            "clientID": 4,
+            "review": "A thought-provoking novel that is just as relevant today as when it was published. A must-read for everyone."
+          }
+        ],
+        "Likes-clients": [1, 2, 4]
+      },
+      {
+        "ID": 3,
+        "Title": "To Kill a Mockingbird",
+        "Author": "Harper Lee",
+        "Genre": "Classic",
+        "Published Year": "1960",
+        "Description": "This Pulitzer Prize-winning novel is narrated by Scout Finch, a young girl in the racially charged South during the 1930s. It addresses the serious issues of race, class, and moral growth as Scout and her brother Jem learn valuable lessons about empathy and justice from their father, Atticus Finch.",
+        "Price": 8.99,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.8,
+        "Reviews": [
+          {
+            "clientID": 8,
+            "review": "An unforgettable story about childhood and morality. Scout and Atticus will always have a place in my heart."
+          }
+        ],
+        "Likes-clients": [1, 3, 8]
+      },
+      {
+        "ID": 4,
+        "Title": "Pride and Prejudice",
+        "Author": "Jane Austen",
+        "Genre": "Romance",
+        "Published Year": "1813",
+        "Description": "In this classic romantic comedy, Elizabeth Bennet navigates the complexities of love, family, and social standing in 19th-century England. Austen's wit and keen observations on human behavior make this novel a delightful exploration of relationships and societal expectations.",
+        "Price": 7.99,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.6,
+        "Reviews": [],
+        "Likes-clients": [2]
+      },
+      {
+        "ID": 5,
+        "Title": "The Catcher in the Rye",
+        "Author": "J.D. Salinger",
+        "Genre": "Fiction",
+        "Published Year": "1951",
+        "Description": "The story of Holden Caulfield, a disenchanted teenager who has just been expelled from prep school. As he wanders New York City, he shares his thoughts on life, love, and the struggle of growing up. Salinger's novel remains a profound reflection of teenage angst and rebellion.",
+        "Price": 9.50,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.3,
+        "Reviews": [],
+        "Likes-clients": []
+      },
+      {
+        "ID": 6,
+        "Title": "The Hobbit",
+        "Author": "J.R.R. Tolkien",
+        "Genre": "Fantasy",
+        "Published Year": "1937",
+        "Description": "Follow the adventure of Bilbo Baggins, a hobbit who is reluctantly swept into a quest to reclaim treasure from the dragon Smaug. This enchanting story is filled with memorable characters, adventure, and the timeless battle between good and evil, setting the stage for Tolkien's epic Middle-earth saga.",
+        "Price": 12.99,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.8,
+        "Reviews": [],
+        "Likes-clients": [5, 6]
+      },
+      {
+        "ID": 7,
+        "Title": "The Alchemist",
+        "Author": "Paulo Coelho",
+        "Genre": "Adventure",
+        "Published Year": "1988",
+        "Description": "A philosophical tale about Santiago, a shepherd boy who dreams of discovering a treasure in Egypt. Through his journey, he learns profound lessons about following one's dreams and listening to one's heart. 'The Alchemist' is a beautiful narrative that inspires readers to pursue their own destinies.",
+        "Price": 11.00,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.6,
+        "Reviews": [
+          {
+            "clientID": 2,
+            "review": "A powerful story that encourages you to follow your dreams. Coelho's writing is poetic and inspiring."
+          }
+        ],
+        "Likes-clients": [4, 7]
+      },
+      {
+        "ID": 8,
+        "Title": "Fahrenheit 451",
+        "Author": "Ray Bradbury",
+        "Genre": "Dystopian",
+        "Published Year": "1953",
+        "Description": "In a future where books are banned and 'firemen' burn any that are found, Guy Montag, a fireman, begins to question the society he lives in. Bradbury's haunting narrative serves as a powerful critique of censorship and the dangers of losing individuality.",
+        "Price": 8.50,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.3,
+        "Reviews": [],
+        "Likes-clients": []
+      },
+      {
+        "ID": 9,
+        "Title": "The Picture of Dorian Gray",
+        "Author": "Oscar Wilde",
+        "Genre": "Philosophical",
+        "Published Year": "1890",
+        "Description": "A cautionary tale about the dangers of vanity and moral decay, the story follows Dorian Gray, a young man who wishes to remain forever young while a portrait of him ages in his stead. Wilde's novel explores themes of beauty, art, and the superficial nature of society.",
+        "Price": 10.00,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain", 
+        "Rating": 4.7,
+        "Reviews": [],
+        "Likes-clients": [3]
+      },
+      {
+        "ID": 10,
+        "Title": "Jane Eyre",
+        "Author": "Charlotte Brontë",
+        "Genre": "Romance",
+        "Published Year": "1847",
+        "Description": "This novel follows the life of Jane Eyre, an orphaned girl who overcomes hardship and finds love with the mysterious Mr. Rochester. Brontë's exploration of themes like independence, morality, and the struggle for self-respect makes this a timeless classic.",
+        "Price": 9.00,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.5,
+        "Reviews": [],
+        "Likes-clients": []
+      },
+      {
+        "ID": 11,
+        "Title": "The Lord of the Rings",
+        "Author": "J.R.R. Tolkien",
+        "Genre": "Fantasy",
+        "Published Year": "1954",
+        "Description": "An epic high-fantasy trilogy that follows the quest of Frodo Baggins as he embarks on a dangerous journey to destroy the One Ring. With richly developed characters and a vast, immersive world, Tolkien's masterpiece has captured the hearts of millions.",
+        "Price": 15.00,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.9,
+        "Reviews": [],
+        "Likes-clients": [4, 5, 8]
+      },
+      {
+        "ID": 12,
+        "Title": "The Chronicles of Narnia",
+        "Author": "C.S. Lewis",
+        "Genre": "Fantasy",
+        "Published Year": "1950",
+        "Description": "A classic series of seven fantasy novels that follow the adventures of children who discover the magical land of Narnia. Through their encounters with mythical creatures and epic battles, they learn valuable lessons about courage, friendship, and faith.",
+        "Price": 12.50,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.6,
+        "Reviews": [],
+        "Likes-clients": []
+      },
+      {
+        "ID": 13,
+        "Title": "Harry Potter",
+        "Author": "J.K Rowling",
+        "Genre": "Fiction",
+        "Published Year": "1951",
+        "Description": "The story of Holden Caulfield, a disenchanted teenager who has just been expelled from prep school. As he wanders New York City, he shares his thoughts on life, love, and the struggle of growing up. Salinger's novel remains a profound reflection of teenage angst and rebellion.",
+        "Price": 9.50,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.3,
+        "Reviews": [],
+        "Likes-clients": []
+      },
+      {
+        "ID": 14,
+        "Title": "Brave New World",
+        "Author": "Aldous Huxley",
+        "Genre": "Dystopian",
+        "Published Year": "1932",
+        "Description": "Huxley's dystopian vision presents a future society driven by technology, consumerism, and artificial happiness. The novel follows Bernard Marx, who feels out of place in this engineered utopia. 'Brave New World' challenges readers to question the cost of progress and the meaning of true happiness.",
+        "Price": 10.50,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.4,
+        "Reviews": [],
+        "Likes-clients": []
+      },
+      {
+        "ID": 15,
+        "Title": "The Grapes of Wrath",
+        "Author": "John Steinbeck",
+        "Genre": "Fiction",
+        "Published Year": "1939",
+        "Description": "A powerful narrative about the struggles of the Joad family as they journey from Oklahoma to California during the Great Depression. Steinbeck's depiction of their hardships highlights the resilience of the human spirit and the fight for justice and dignity in a broken society.",
+        "Price": 11.99,
+        "Cover Image URL": "https://th.bing.com/th/id/OIP.YY-2rOTwqOzDvIoBMaRluQHaLH?rs=1&pid=ImgDetMain",
+        "Rating": 4.5,
+        "Reviews": [],
+        "Likes-clients": []
+      }
+    ]
+  }
+  
