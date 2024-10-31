@@ -16,7 +16,7 @@
 
       <div id="form-container" class="container p-4">
 
-        <form class="row g-3 p-3">
+        <form class="row g-3 p-3" id="form-register">
 
           <div class="col-md-6 p-3">
             <label for="name-input-register" class="form-label">Name</label>
@@ -35,7 +35,7 @@
 
           <div class="col-md-6 p-3">
             <label for="password-input-register" class="form-label">Password</label>
-            <input type="text" class="form-control" d="password-input-register"/>
+            <input type="text" class="form-control" id="password-input-register"/>
           </div>
 
           <div class="col-md-6 p-3">
@@ -62,9 +62,7 @@
             <button type="submit" class="btn btn-success">Register</button>
           </div>
           <div class="col-12 text-center mt-4">
-            <a href="./index.html" title="GO back to Login"> 
-            <button type="button" class="btn btn-primary">Login</button>
-            </a>
+            <button type="button" onclick="history.back()" class="btn btn-primary">Go Back</button>
           </div>
 
         </form>
@@ -76,5 +74,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
+    <script src="./js/register.js"></script>
   </body>
 </html>
