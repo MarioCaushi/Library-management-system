@@ -3,34 +3,35 @@ const renderAllBooks = () => {
   let booksTemplate = "";
   books.forEach((book) => {
     booksTemplate +=
-      '<li><img id="cover-img" src="' +
+      '<li id="book-container"><img id="cover-img" src="' +
       book["Cover Image URL"] +
-      '"/><h2 id="book-title">' +
+      '"/><div id="book-details"><h2 id="book-title">' +
       book.Title +
-      "</h2><span id='book-author'>" +
+      '</h2><span id="book-author">Author: ' +
       book.Author +
-      "</span><span id='book-year'>" +
+      '</span><span id="book-year">Published Year: ' +
       book["Published Year"] +
-      "</span><span id='book-rating'>" +
+      '</span><span id="book-rating">Rating: ' +
       book.Rating +
-      "</span><span id='book-price'>$" +
+      ' / 5</span><span id="book-price">$' +
       book.Price +
-      " USD</span><button id='like-btn'><i class='fas fa-heart'></i>Like<span class='like-count'>123</span></button><br><button id='cart-btn'><i class='fas fa-shopping-cart'></i>Add to Cart</button></li>";
+      ' USD</span><button id="like-btn"><i class="fas fa-heart"></i>Like<span class="like-count">123</span></button><br><button id="cart-btn"><i class="fas fa-shopping-cart"></i>Add to Cart</button></div></li>';
   });
-  document.getElementById("book-container").innerHTML += booksTemplate;
+  document.getElementById("book-grid").innerHTML += booksTemplate;
 };
 
 renderAllBooks();
 
 /*
-<li>
-    <img />
-    <h2>Title</h2>
-    <span>Author</span>
-    <span>Published Year</span>
-    <span>Rating</span>
-    <span>Price</span>
-    <button>Like</button>
-    <button>Cart</button>
-</li>
+'<li class="book-container">
+  <img id="cover-img" src="' + book["Cover Image URL"] + '"/>
+  <div class="book-details">
+    <h2 id="book-title">' + book.Title + '</h2>
+    <span id="book-author">Author: ' + book.Author + '</span>
+    <span id="book-year">Published Year: ' + book["Published Year"] + '</span>
+    <span id="book-rating">Rating: ' + book.Rating + '</span>
+    <span id="book-price">$' + book.Price + ' USD</span>
+	<button id='like-btn'><i class='fas fa-heart'></i>Like<span class='like-count'>123</span></button><br><button id='cart-btn'><i class='fas fa-shopping-cart'></i>Add to Cart</button></li>";
+  </div>
+  </li>'
 */
