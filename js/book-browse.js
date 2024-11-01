@@ -15,7 +15,7 @@ const renderAllBooks = () => {
       book.Rating +
       "</span><span id='book-price'>$" +
       book.Price +
-      " USD</span><button id='like-btn'>Like</button><br><button id='cart-btn'>Add to Cart</button></li>";
+      " USD</span><button id='like-btn'>Like</button><br><button id='cart-btn'><i class='fas fa-shopping-cart'></i>Add to Cart</button></li>";
   });
   document.getElementById("book-container").innerHTML += booksTemplate;
 };

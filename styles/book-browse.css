@@ -39,3 +39,29 @@ li {
   margin: 10px;
   padding: 10px;
 }
+
+#cart-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#cart-btn:hover {
+  background-color: #0069d9;
+  transform: scale(1.05);
+}
+
+#cart-btn:active {
+  background-color: #0056b3;
+  transform: scale(0.98);
+}
