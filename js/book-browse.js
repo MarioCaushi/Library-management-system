@@ -3,19 +3,19 @@ const renderAllBooks = () => {
   let booksTemplate = "";
   books.forEach((book) => {
     booksTemplate +=
-      '<li><img src="' +
+      '<li><img id="cover-img" src="' +
       book["Cover Image URL"] +
-      '"/><br><h2>' +
+      '"/><h2 id="book-title">' +
       book.Title +
-      "</h2><span>" +
+      "</h2><span id='book-author'>" +
       book.Author +
-      "</span><span>" +
+      "</span><span id='book-year'>" +
       book["Published Year"] +
-      "</span><br><span>" +
+      "</span><span id='book-rating'>" +
       book.Rating +
-      "</span><br><span>$" +
+      "</span><span id='book-price'>$" +
       book.Price +
-      " USD</span><br><button>Like</button><br><button>Add to Cart</button></li>";
+      " USD</span><button id='like-btn'>Like</button><br><button id='cart-btn'>Add to Cart</button></li>";
   });
   document.getElementById("book-container").innerHTML += booksTemplate;
 };
