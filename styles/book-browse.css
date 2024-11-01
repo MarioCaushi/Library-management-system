@@ -26,11 +26,6 @@ span {
   margin: 1%;
 }
 
-button {
-  padding: 2%;
-  margin: 1%;
-}
-
 li {
   display: flex;
   flex-direction: column;
@@ -64,4 +59,35 @@ li {
 #cart-btn:active {
   background-color: #0056b3;
   transform: scale(0.98);
+}
+
+#like-btn {
+  background-color: #dc3545;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#like-btn:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+#like-btn:active {
+  background-color: #bd2130;
+  transform: scale(0.98);
+}
+
+.like-count {
+  font-weight: bold;
+  font-size: 16px;
 }
