@@ -1,0 +1,23 @@
+#book-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+#book-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+img {
+}
+
+li {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+}
