@@ -28,7 +28,7 @@ function evaluateLogin() {
     document.getElementById("username-login").value = "";
     document.getElementById("password-login").value = "";
 
-    manager=JSON.parse(localStorage.getItem("manager"));
+    let manager=JSON.parse(localStorage.getItem("manager"));
 
     if (username === manager.Username) {
         if (manager.Password !== password) {
@@ -40,7 +40,7 @@ function evaluateLogin() {
         console.log("Manager logged in successfully!");
         window.location.href = "manager-welcome.html";
     } else {
-        client=JSON.parse(localStorage.getItem("client"));
+        let client=JSON.parse(localStorage.getItem("client"));
         const user = client.find(user => user.Username === username);
         if (user) {
             if (user.Password !== password) {
@@ -58,10 +58,19 @@ function evaluateLogin() {
     }
 }
 
-// Fetching the actual data
-if (localStorage.length === 0) {
-    fetchData();
-} 
-
 // Evaluating the login input
-document.getElementById("login-btn").addEventListener("click", evaluateLogin);
+document.addEventListener("DOMContentLoaded", () => {
+    // Fetching the actual data
+    if (localStorage.length === 0) {
+        fetchData();
+    }
+
+    const loginButton = document.getElementById("login-button");
+    if (loginButton) {
+        loginButton.addEventListener("click", evaluateLogin);
+    } else {
+        console.error("Login button not found!");
+    }
+});
+//exporting the fetchData function so it can be used in other files
+export {fetchData};

@@ -29,7 +29,7 @@ function formEvaluation(event) {
     const rulesParagraphs = document.getElementById('rules-container-register').getElementsByTagName('p');
 
     let existingUser = client.find(user => username === user.Username);
-    if (existingUser) {
+    if (existingUser || username=="") {
         rulesParagraphs[0].innerHTML = "❌ Username must be unique";
         document.getElementById("username-input-register").focus();
         console.log("Username Already Exists");
@@ -52,7 +52,7 @@ function formEvaluation(event) {
     }
 
     existingUser = client.find(user => user.Email === email);
-    if (existingUser) {
+    if (existingUser || email=="") {
         rulesParagraphs[2].innerHTML = "❌ Email must not already be in use";
         document.getElementById("email-input-register").focus();
         console.log("Email is not unique");
