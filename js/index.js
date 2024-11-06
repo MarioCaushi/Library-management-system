@@ -38,7 +38,7 @@ function evaluateLogin() {
         }
         //If manager credentials added successfull then you need to redirct to your own page
         console.log("Manager logged in successfully!");
-        window.location.href = "manager-book-management.html";
+        window.location.href = "manager-welcome.html.html";
     } else {
         let client=JSON.parse(localStorage.getItem("client"));
         const user = client.find(user => user.Username === username);
