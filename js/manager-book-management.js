@@ -26,9 +26,9 @@ function dataValidation(){
             let client = JSON.parse(localStorage.getItem("client"));
             let book = JSON.parse(localStorage.getItem("book"));
 
-            console.log(manager);
-            console.log(client);
-            console.log(book);
+            console.log("Data Validation: ",manager);
+            console.log("Data Validation",client);
+            console.log("Data Validation", book);
 
             if(!manager || !book || !client)
                 {
@@ -44,7 +44,7 @@ const books=JSON.parse(localStorage.getItem("book"));
 function showBooks(books) {
 
     const container = document.getElementById("viewBooks-management-container");
-    container.innerHTML="";
+    container.innerHTML = "";
 
     books.forEach(book => {
         
@@ -53,30 +53,37 @@ function showBooks(books) {
         card.style.width = "300px";
 
         let imageURL = book["Cover Image URL"];
-        let title= book["Title"];
+        let title = book["Title"];
         let author = book["Author"];
         let genre = book["Genre"];
         let price = book["Price"];
-        let bookID= book["ID"];
+        let bookID = book["ID"];
 
-        card.innerHTML=` <img src=" ${imageURL}" class="card-img-top" alt="Book Cover Image" style="height: 450px">
+        card.innerHTML = `
+            <img src="${imageURL}" class="card-img-top" alt="Book Cover Image" style="height: 450px">
             <div class="card-body">
                 <h5 class="card-title">${title}</h5>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Author: ${author} </li>
-                <li class="list-group-item">Genre: ${genre} </li>
+                <li class="list-group-item">Author: ${author}</li>
+                <li class="list-group-item">Genre: ${genre}</li>
                 <li class="list-group-item">Book Price: ${price}$</li>
-                <li class="list-group-item">Book ID: ${bookID} </li>
+                <li class="list-group-item">Book ID: ${bookID}</li>
             </ul>
             <div class="card-body d-flex justify-content-center">
                 <button type="button" class="btn btn-danger m-1" id="delete-${bookID}">Delete</button>
-                <button type="button" class="btn btn-warning m-1" id"edit-${bookID}">Edit</button>
+                <button type="button" class="btn btn-warning m-1" id="edit-${bookID}">Edit</button>
                 <button type="button" class="btn btn-info m-1" id="info-${bookID}">Info</button>
             </div>            
         </div>`;
 
         container.appendChild(card);
+
+        // Attach event listener for delete button
+        const deleteButton = card.querySelector(`#delete-${bookID}`);
+        deleteButton.addEventListener("click", function () {
+            deleteBook(bookID, books);
+        });
     });
 }
 
@@ -87,6 +94,7 @@ function search(books) {
     console.log("Search Value:", searchValue); // For debugging
 
     const searchBooks = searchHelper(books, searchValue);
+    console.log(searchBooks); //Debugging purposes
     showBooks(searchBooks);
 }
 
@@ -118,6 +126,25 @@ function searchHelper(books, word) {
         });
         
         return searchBooks;
+    }
+}
+
+//Funtion to delete a book
+function deleteBook(id, books) {
+
+    console.log("ID selected to delete book: ", id);
+    console.log("Print all the books for debugging purposes:", books);
+
+    const agree = confirm("Are you sure?");
+
+    if(agree) {
+        const updatedBooks = books.filter(book => book.ID !== id);
+
+        console.log("Print the updated list of books to see if there are any changes made",updatedBooks);
+    
+        localStorage.setItem("book",JSON.stringify(updatedBooks));
+    
+        showBooks(updatedBooks);
     }
 }
 
