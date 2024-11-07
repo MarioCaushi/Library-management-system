@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Add-Book: Manager</title>
+</head>
+
+<body style="background-color: #4344431c;">
+
+    <!--The Nav Bar-->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border border-dark border-opacity-50 rounded-3 shadow-sm m-2">
+
+        <div class="container-fluid">
+
+            <div class="me-auto">
+                <img src="images/manager-navbar-icon.png" alt="Manager Navbar Icon" width="50px" height="50px"/>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-dropdown"
+                aria-controls="navbar-dropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse p-1" id="navbar-dropdown">
+
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item m-2">
+                        <a class="nav-link" aria-current="page" href="manager-welcome.html">Home</a>
+                    </li>
+                    <li class="nav-item dropdown m-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Client Management
+                        </a>
+                        <ul class="dropdown-menu border border-dark border-opacity-50 rounded-3 shadow-sm">
+                            <li>
+                                <a class="dropdown-item" href="manager-client-management.html">
+                                   View Clients
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="register.html">
+                                   Add Client
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown m-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Book Management
+                        </a>
+                        <ul class="dropdown-menu border border-dark border-opacity-50 rounded-3 shadow-sm">
+                            <li>
+                                <a class="dropdown-item" href="manager-book-management.html">
+                                   View Books
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="add-book-manager.html">
+                                   Add Book
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="ms-auto">
+                <button type="button" class="btn btn-outline-danger" id="logout-button">Log Out</button>
+            </div>
+
+        </div>
+
+    </nav>
+    <!--Add book thing-->
+    <div class="container-fluid mx-auto mt-5 d-flex justify-content-center gap-2" >
+        <h4>Add Book</h4>
+        <img src="/images/add-book-manager-icon.png" alt="This is a book icon for the add book in the manager part" width="30px" height="30px"/>
+    </div>
+
+     <!--The Add-Book Formr-->
+    <div id="form-container" class="container p-4">
+
+        <form class="row g-3 p-3" id="form-register">
+
+          <div class="col-md-6 p-3">
+            <label for="title-input-book" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title-input-book" placeholder="Title should be unique" />
+          </div>
+
+          <div class="col-md-6 p-3">
+            <label for="author-input-book" class="form-label">Author</label>
+            <input type="text" class="form-control" id="author-input-book" />
+          </div>
+
+          <div class="col-md-3 p-3">
+            <label for="genre-input-book" class="form-label">Genre</label>
+            <input type="text" class="form-control" id="genre-input-book"/>
+          </div>
+
+          <div class="col-md-3 p-3">
+            <label for="year-input-book" class="form-label">Published Year</label>
+            <input type="number" class="form-control" id="year-input-book"/>
+          </div>
+
+          <div class="col-md-3 p-3">
+            <label for="price-input-book" class="form-label">Price</label>
+            <input type="number" class="form-control" id="price-input-book" step="0.01" min="0"/>
+          </div>
+
+          <div class="col-md-3 p-3">
+            <label for="rating-input-book" class="form-label">Rating</label>
+            <input type="number" class="form-control" id="rating-input-book" placeholder="Rating provided by critics" step="0.01" min="0" max="10"/>
+          </div>
+
+          <div class="col-md-6 p-3">
+            <label for="image-input-book" class="form-label">Cover Image URL</label>
+            <input type="url" class="form-control" id="image-input-book"/>
+          </div>
+
+          <div class="col-md-6 p-3">
+            <label for="description-input-book" class="form-label">Description</label>
+            <textarea class="form-control" id="description-input-book" rows="4" placeholder="Write the book description here."></textarea>
+          </div>
+          
+          <div class="col-12 text-center mt-4">
+            <button type="submit" class="btn btn-success">Add Book</button>
+          </div>
+          <div class="col-12 text-center mt-4">
+            <button type="button" onclick="history.back()" class="btn btn-primary">Go Back</button>
+          </div>
+
+        </form>
+
+      </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <script src="./js/manager-add-book.js" type="module"> </script>
+</body>
+
+</html>

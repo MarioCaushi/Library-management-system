@@ -149,18 +149,25 @@ function deleteBook(id, books) {
 }
 
 
-document.addEventListener("DOMContentLoaded", function() { 
-    document.getElementById("logout-button").addEventListener("click", logoutAction);
-    dataValidation();
-    showBooks(books);
-    document.getElementById("search-book-management").addEventListener("input", function() {
-        search(books);
-    });
-    document.getElementById("clear-book-management-button").addEventListener("click", function () {
-        document.getElementById("search-book-management").value="";
+document.addEventListener("DOMContentLoaded", function() {
+    try {
+        document.getElementById("logout-button").addEventListener("click", logoutAction);
+        dataValidation();
         showBooks(books);
-    })
-    
+        
+        document.getElementById("search-book-management").addEventListener("input", function() {
+            search(books);
+        });
+        
+        document.getElementById("clear-book-management-button").addEventListener("click", function() {
+            document.getElementById("search-book-management").value = "";
+            showBooks(books);
+        });
+    } catch (error) {
+        console.error("An error occurred:", error);
+
+    }
 });
 
 
+export {logoutAction};
