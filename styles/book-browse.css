@@ -1,7 +1,12 @@
+body {
+  background-color: #f9f9fb;
+}
+
 #book-header {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "Times New Roman", Times, serif;
 }
 
 #book-grid {
@@ -9,8 +14,9 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
+  gap: 20px;
+  padding: 20px;
+  background-color: rgb(155, 103, 103);
 }
 
 .book-container {
@@ -21,10 +27,14 @@
   align-items: center;
   padding: 16px;
   background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(6, 6, 6, 0.2);
   transition: transform 0.2s ease;
   text-align: center;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
 }
 
 @media (max-width: 992px) {

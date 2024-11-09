@@ -72,7 +72,7 @@ const renderbookInfo = (bookID) => {
         `;
 
   const specificBookReviews = specificBook.Reviews;
-  bookInfoTemplate += `<div id="reviews-container"><h3>Reviews</h3>`;
+  bookInfoTemplate += `<div id="reviews-container"><h3>Reviews:</h3>`;
   specificBookReviews.forEach((review) => {
     bookInfoTemplate += `
       <div class="review">
@@ -90,7 +90,7 @@ const renderbookInfo = (bookID) => {
   <style>
     #books-container {
       font-family: 'Montserrat', sans-serif;
-      background-color: #f9f9fb;
+      background-color: rgb(155, 103, 103);
       color: #333;
       display: flex;
       justify-content: center;
@@ -99,12 +99,11 @@ const renderbookInfo = (bookID) => {
       padding: 20px;
     }   
     
-    // #specific-book-details {
-    //   display: flex;
-    //   width: 100%;
-    //   gap: 20px;
-    //   padding: 20px;
-    // }
+    #specific-book-details {
+      width: 100%;
+      gap: 20px;
+      padding: 20px;
+    }
 
     #specific-book-container {
       display: flex;
@@ -161,6 +160,7 @@ const renderbookInfo = (bookID) => {
       font-weight: 500;
       color: #4b8d62;
     }
+
     #specific-book-info div {
       display: flex;
       gap: 20px;
@@ -171,23 +171,37 @@ const renderbookInfo = (bookID) => {
     #reviews-container {
       display: flex;
       gap: 20px;
-      margin-top: 20px;
+      // margin-top: 20px;
       font-size: 16px;
+      flex-direction: column;
+      width: 100%;
+      padding: 20px;
+      background-color: #f4f4f7;
+      border-top: 1px solid #ddd;
 
     }
 
-    @media (max-width: 768px) {
-      #specific-book-container {
-        flex-direction: column;
-      }
+    #reviews-container h3 {
 
-      #specific-cover-image, #specific-book-info {
-        width: 100%;
-      }
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
 
-      #specific-book-info {
-        padding: 20px;
-      }
+    #review-header {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .review {
+      margin-bottom: 15px;
+      padding: 15px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .review strong {
+      color: #333;
     }
   </style>
   `;
