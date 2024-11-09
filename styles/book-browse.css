@@ -141,7 +141,7 @@
   transform: scale(0.98);
 }
 
-.like-count {
+#like-count {
   font-weight: bold;
   font-size: 16px;
 }

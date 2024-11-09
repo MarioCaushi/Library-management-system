@@ -46,8 +46,9 @@ const renderAllBooks = () => {
 */
 
 const renderbookInfo = (bookID) => {
-  specificBook = books[bookID];
+  specificBook = books[bookID - 1];
   let bookInfo = document.getElementById("books-container");
+  let bookStyling = document.getElementsByTagName("head")[0];
   bookInfo.innerHTML =
     "<input type='button' value='Go Back' onclick='renderAllBooks()' />";
   let bookInfoTemplate = `
@@ -71,6 +72,100 @@ const renderbookInfo = (bookID) => {
     </div>
   `;
   bookInfo.innerHTML += bookInfoTemplate;
+  bookStylingTemplate = `
+  <style>
+
+    /* Body styling */
+    #specific-book-container {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f9f9fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+    }
+
+    /* Book container styling */
+    // #specific-book-container {
+    //   display: flex;
+    //   max-width: 900px;
+    //   background-color: #fff;
+    //   border-radius: 12px;
+    //   overflow: hidden;
+    //   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    // }
+
+    /* Cover image */
+    #specific-cover-image {
+      flex: 1;
+      max-width: 300px;
+      background-color: #f4f4f7;
+    }
+
+    #specific-cover-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-right: 1px solid #e0e0e0;
+    }
+
+    /* Book information styling */
+    #specific-book-info {
+      flex: 2;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Title and Author */
+    #specific-title {
+      font-family: 'Lora', serif;
+      font-size: 28px;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    #specific-author, #specific-genre, #specific-published, #specific-description {
+      margin: 6px 0;
+      line-height: 1.6;
+      color: #555;
+    }
+
+    #specific-author strong, #specific-genre strong, #specific-published strong, #specific-description strong {
+      color: #333;
+    }
+
+    /* Price and Rating */
+    #specific-price, #specific-rating {
+      font-weight: 500;
+      color: #4b8d62;
+    }
+
+    /* Price and Rating container */
+    #specific-book-info div {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      #specific-book-container {
+        flex-direction: column;
+        max-width: 90%;
+      }
+
+      #specific-cover-image {
+        max-width: 100%;
+      }
+    }
+  </style>
+  `;
+  bookStyling.innerHTML += bookStylingTemplate;
 };
 
 /*
