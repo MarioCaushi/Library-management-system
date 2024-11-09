@@ -28,8 +28,8 @@ function formEvaluation(event) {
 
     const rulesParagraphs = document.getElementById('rules-container-register').getElementsByTagName('p');
 
-    let existingUser = client.find(user => username === user.Username);
-    if (existingUser) {
+    let existingUser = client.find(user => username.toLowerCase().trim() === user.Username.toLowerCase().trim());
+    if (existingUser || username.trim() =="") {
         rulesParagraphs[0].innerHTML = "❌ Username must be unique";
         document.getElementById("username-input-register").focus();
         console.log("Username Already Exists");
@@ -51,8 +51,8 @@ function formEvaluation(event) {
         },200);
     }
 
-    existingUser = client.find(user => user.Email === email);
-    if (existingUser) {
+    existingUser = client.find(user => user.Email.toLowerCase().trim() === email.toLowerCase().trim());
+    if (existingUser || email.trim() == "") {
         rulesParagraphs[2].innerHTML = "❌ Email must not already be in use";
         document.getElementById("email-input-register").focus();
         console.log("Email is not unique");
@@ -63,7 +63,7 @@ function formEvaluation(event) {
         },300);
     }
 
-    if (age < 18) {
+    if (age < 18 || date.trim() == "") {
         rulesParagraphs[3].innerHTML = "❌ You must be 18+";
         document.getElementById("date-input-register").focus();
         console.log("User under 18");
@@ -73,6 +73,13 @@ function formEvaluation(event) {
             rulesParagraphs[3].innerHTML = "✅ You must be 18+";
         },400);
         
+    }
+
+    if (name.trim() == "" || lastName.trim() == "") {
+        console.log("Name or Last Name is empty");
+        isValid = false;
+        alert("Name and Last Name cannot be empty!");
+        return;
     }
 
     if (isValid) {
