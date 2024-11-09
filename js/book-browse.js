@@ -53,28 +53,38 @@ const renderbookInfo = (bookID) => {
     "<input type='button' value='Go Back' onclick='renderAllBooks()' />";
   let bookInfoTemplate = `
     <div id="specific-book-container">
-      <div id="specific-cover-image">
-        <img src="${specificBook["Cover Image URL"]}"
-      </div>
-      <div id="specific-book-info">
-        <h2 id="specific-title">${specificBook.Title}</h2>
-        <p id="specific-author"><strong>Author: </strong>${specificBook.Author}</p>
-        <p id="specific-genre"><strong>Genre: </strong>${specificBook.Genre}</p>
-        <p id="specific-published"><strong>Published Year: </strong>${specificBook["Published Year"]}</p>
-        <p id="specific-description"><strong>Description: </strong>${specificBook.Description}</p>
-        <div>
-          <span id="specific-price"><strong>Price: </strong>${specificBook.Price}$</span>
-          <span id="specific-rating"><strong>Rating: </strong>${specificBook.Rating} / 5</span>
+      <div id="specific-book-details">
+        <div id="specific-cover-image">
+          <img src="${specificBook["Cover Image URL"]}"
+        </div>
+        <div id="specific-book-info">
+          <h2 id="specific-title">${specificBook.Title}</h2>
+          <p id="specific-author"><strong>Author: </strong>${specificBook.Author}</p>
+          <p id="specific-genre"><strong>Genre: </strong>${specificBook.Genre}</p>
+          <p id="specific-published"><strong>Published Year: </strong>${specificBook["Published Year"]}</p>
+          <p id="specific-description"><strong>Description: </strong>${specificBook.Description}</p>
+          <div>
+            <span id="specific-price"><strong>Price: </strong>${specificBook.Price}$</span>
+            <span id="specific-rating"><strong>Rating: </strong>${specificBook.Rating} / 5</span>
+          </div>
         </div>
       </div>
-    </div>
         `;
+
   const specificBookReviews = specificBook.Reviews;
+  bookInfoTemplate += `<div id="reviews-container"><h3>Reviews</h3>`;
   specificBookReviews.forEach((review) => {
     bookInfoTemplate += `
-      <div><span>${clients[review.clientID].Username}</span></div>
+      <div class="review">
+        <span id="review-header"><strong>${
+          clients[review.clientID - 1].Username
+        }</strong> has left a review: </span>
+        <p id="review-content">${review.review}</p>
+      </div>
     `;
   });
+  bookInfoTemplate += "</div></div>";
+
   bookInfo.innerHTML += bookInfoTemplate;
   bookStylingTemplate = `
   <style>
@@ -87,12 +97,19 @@ const renderbookInfo = (bookID) => {
       align-items: center;
       min-height: 100vh;
       padding: 20px;
-    }
+    }   
+    
+    // #specific-book-details {
+    //   display: flex;
+    //   width: 100%;
+    //   gap: 20px;
+    //   padding: 20px;
+    // }
 
     #specific-book-container {
       display: flex;
       width: 100%;
-      max-width: 1200px;
+      // max-width: 1200px;
       background-color: #fff;
       border-radius: 12px;
       overflow: hidden;
@@ -149,6 +166,14 @@ const renderbookInfo = (bookID) => {
       gap: 20px;
       margin-top: 20px;
       font-size: 16px;
+    }
+
+    #reviews-container {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      font-size: 16px;
+
     }
 
     @media (max-width: 768px) {
