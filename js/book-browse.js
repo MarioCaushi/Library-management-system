@@ -1,5 +1,5 @@
 books = JSON.parse(localStorage.getItem("book"));
-
+clients = JSON.parse(localStorage.getItem("client"));
 const renderAllBooks = () => {
   let pageContainer = document.getElementById("books-container");
   pageContainer.innerHTML = "";
@@ -63,73 +63,75 @@ const renderbookInfo = (bookID) => {
         <p id="specific-published"><strong>Published Year: </strong>${specificBook["Published Year"]}</p>
         <p id="specific-description"><strong>Description: </strong>${specificBook.Description}</p>
         <div>
-          <span id="specific-price"><strong>Price: </strong>${specificBook.Price}</span>
+          <span id="specific-price"><strong>Price: </strong>${specificBook.Price}$</span>
           <span id="specific-rating"><strong>Rating: </strong>${specificBook.Rating} / 5</span>
-        </div>
-        <div>
         </div>
       </div>
     </div>
-  `;
+        `;
+  const specificBookReviews = specificBook.Reviews;
+  specificBookReviews.forEach((review) => {
+    bookInfoTemplate += `
+      <div><span>${clients[review.clientID].Username}</span></div>
+    `;
+  });
   bookInfo.innerHTML += bookInfoTemplate;
   bookStylingTemplate = `
   <style>
-
-    /* Body styling */
-    #specific-book-container {
+    #books-container {
       font-family: 'Montserrat', sans-serif;
       background-color: #f9f9fb;
+      color: #333;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      color: #333;
+      padding: 20px;
     }
 
-    /* Book container styling */
-    // #specific-book-container {
-    //   display: flex;
-    //   max-width: 900px;
-    //   background-color: #fff;
-    //   border-radius: 12px;
-    //   overflow: hidden;
-    //   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    // }
-
-    /* Cover image */
+    #specific-book-container {
+      display: flex;
+      width: 100%;
+      max-width: 1200px;
+      background-color: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
     #specific-cover-image {
       flex: 1;
-      max-width: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background-color: #f4f4f7;
+      padding: 20px;
     }
 
     #specific-cover-image img {
       width: 100%;
-      height: 100%;
+      max-width: 450px;
+      height: auto;
       object-fit: cover;
-      border-right: 1px solid #e0e0e0;
+      border-radius: 8px;
     }
 
-    /* Book information styling */
     #specific-book-info {
-      flex: 2;
-      padding: 30px;
+      flex: 1;
+      padding: 40px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
     }
 
-    /* Title and Author */
     #specific-title {
       font-family: 'Lora', serif;
-      font-size: 28px;
+      font-size: 32px;
       color: #333;
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     #specific-author, #specific-genre, #specific-published, #specific-description {
-      margin: 6px 0;
+      margin: 8px 0;
       line-height: 1.6;
       color: #555;
     }
@@ -138,13 +140,10 @@ const renderbookInfo = (bookID) => {
       color: #333;
     }
 
-    /* Price and Rating */
     #specific-price, #specific-rating {
       font-weight: 500;
       color: #4b8d62;
     }
-
-    /* Price and Rating container */
     #specific-book-info div {
       display: flex;
       gap: 20px;
@@ -152,15 +151,17 @@ const renderbookInfo = (bookID) => {
       font-size: 16px;
     }
 
-    /* Responsive design */
     @media (max-width: 768px) {
       #specific-book-container {
         flex-direction: column;
-        max-width: 90%;
       }
 
-      #specific-cover-image {
-        max-width: 100%;
+      #specific-cover-image, #specific-book-info {
+        width: 100%;
+      }
+
+      #specific-book-info {
+        padding: 20px;
       }
     }
   </style>
@@ -195,5 +196,9 @@ const renderbookInfo = (bookID) => {
   </div>
 </div>
 */
+
+const renderBookReviews = () => {
+  console.log("Hello");
+};
 
 renderAllBooks();
