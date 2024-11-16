@@ -84,6 +84,11 @@ function showBooks(books) {
         deleteButton.addEventListener("click", function () {
             deleteBook(bookID, books);
         });
+
+        const infoButton = card.querySelector(`#info-${bookID}`);
+        infoButton.addEventListener("click", function () {
+            infoBook(bookID);
+        });
     });
 }
 
@@ -148,6 +153,24 @@ function deleteBook(id, books) {
     }
 }
 
+function infoBook(id) {
+
+    const books = JSON.parse(localStorage.getItem("book"));
+    if (!books) {
+        console.error("No book data found in localStorage.");
+        return;
+    }
+
+    const bookInfo = books.find(book => book["ID"] == id);
+    if (!bookInfo) {
+        console.error("No matching book found for the given ID.");
+        return;
+    }
+
+    localStorage.setItem("selectedBook", JSON.stringify(bookInfo));
+
+    window.location.href = "info-book-manager.html";
+}
 
 document.addEventListener("DOMContentLoaded", function() {
     try {
@@ -170,4 +193,4 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-export {logoutAction};
+export {logoutAction };

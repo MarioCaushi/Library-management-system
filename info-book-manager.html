@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Book Info</title>
+</head>
+
+<body style="background-color: #4344431c;">
+
+    <!--The Nav bar-->
+    <nav
+        class="navbar navbar-expand-lg bg-body-tertiary border border-dark border-opacity-50 rounded-3 shadow-sm m-2 position-sticky top-0 z-1">
+
+        <div class="container-fluid">
+
+            <div class="me-auto">
+                <img src="images/manager-navbar-icon.png" alt="Manager Navbar Icon" width="50px" height="50px" />
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-dropdown"
+                aria-controls="navbar-dropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse p-1" id="navbar-dropdown">
+
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item m-2">
+                        <a class="nav-link" aria-current="page" href="manager-welcome.html">Home</a>
+                    </li>
+                    <li class="nav-item dropdown m-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Client Management
+                        </a>
+                        <ul class="dropdown-menu border border-dark border-opacity-50 rounded-3 shadow-sm">
+                            <li>
+                                <a class="dropdown-item" href="manager-client-management.html">
+                                    View Clients
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="register.html">
+                                    Add Client
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown m-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Book Management
+                        </a>
+                        <ul class="dropdown-menu border border-dark border-opacity-50 rounded-3 shadow-sm">
+                            <li>
+                                <a class="dropdown-item" href="manager-book-management.html">
+                                    View Books
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="add-book-manager.html">
+                                    Add Book
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="ms-auto">
+                <button type="button" class="btn btn-outline-danger" id="logout-button">Log Out</button>
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!--Info book thing-->
+    <div class="container-fluid mx-auto mt-4 d-flex justify-content-center gap-2">
+        <img src="/images/book-info-manager-icon.png" alt="This is an info icon for the info book in the manager part"
+            width="30px" height="30px" />
+        <h4>Book Information</h4>
+    </div>
+
+
+    <!--The actual Book Showing structure-->
+    <div class="container-fluid m-2 p-2 mx-auto" id="book-container">
+
+        <!--The book preview (Image and Details)-->
+        <div class="container row m-2 p-2 mx-auto d-flex align-items-center" id="book-preview-container">
+
+            <!-- Image Container -->
+            <div class="col-8 col-md-4 m-3 mx-auto" id="book-image-container">
+                <!--JS Dynamic Content-->
+            </div>
+
+            <!-- Book Info Container -->
+            <div class="col-10 col-md-7 m-2" id="book-info-container">
+
+                <div class="container-fluid m-1 p-1 mx-auto" id="book-title-container">
+                    <!--JS Dynamic Content-->
+                </div>
+
+                <div class="container-fluid m-1 p-1" id="book-description-container">
+                    <!--JS Dynamic Content-->
+                </div>
+
+                <div class="container-fluid m-2">
+                    <div class="row mx-auto">
+                        <!-- Author -->
+                        <div class="col-12 col-md-3 fw-bold mb-2">Author:</div>
+                        <div class="col-12 col-md-9 mb-2" id="book-info-author"><!--JS Dynamic Content--></div>
+
+                        <!-- Genre -->
+                        <div class="col-12 col-md-3 fw-bold mb-2">Genre:</div>
+                        <div class="col-12 col-md-9 mb-2" id="book-info-genre"><!--JS Dynamic Content--></div>
+
+                        <!-- Published Year -->
+                        <div class="col-12 col-md-3 fw-bold mb-2">Published Year:</div>
+                        <div class="col-12 col-md-9 mb-2" id="book-info-year"><!--JS Dynamic Content--></div>
+
+                        <!-- Price -->
+                        <div class="col-12 col-md-3 fw-bold mb-2">Price:</div>
+                        <div class="col-12 col-md-9 mb-2" id="book-info-price"><!--JS Dynamic Content--></div>
+
+                        <!-- Rating -->
+                        <div class="col-12 col-md-3 fw-bold mb-2">Rating:</div>
+                        <div class="col-12 col-md-9 mb-2" id="book-info-rating"><!--JS Dynamic Content--></div>
+
+                        <!-- No. Likes -->
+                        <div class="col-12 col-md-3 fw-bold mb-2">No. Likes:</div>
+                        <div class="col-12 col-md-9 mb-2" id="book-info-likes"><!--JS Dynamic Content--></div>
+
+                        <!-- No. Reviews -->
+                        <div class="col-12 col-md-3 fw-bold mb-2">No. Reviews:</div>
+                        <div class="col-12 col-md-9 mb-2" id="book-info-reviews"><!--JS Dynamic Content--></div>
+
+                        <!-- ID -->
+                        <div class="col-12 col-md-3 fw-bold mb-2">ID:</div>
+                        <div class="col-12 col-md-9 mb-2" id="book-info-id"><!--JS Dynamic Content--></div>
+                    </div>
+                </div>
+
+
+                <div class="container d-flex justify-content-center gap-2 mt-5">
+                    <button type="button" class="btn"
+                        style="background-color: #f2d7d5; color: #c0392b; border: 1px solid #c0392b;"
+                        id="delete-btn">Delete</button>
+                    <button type="button" class="btn"
+                        style="background-color: #d5eaf3; color: #2980b9; border: 1px solid #2980b9;"
+                        onclick="history.back()">Go Back</button>
+                    <button type="button" class="btn"
+                        style="background-color: #d5f5e3; color: #27ae60; border: 1px solid #27ae60;">Edit</button>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!--The book preview (Likes and Reviews)-->
+        <div class="container row m-2 p-2 mx-auto d-flex align-items-center" id="client-review-container">
+
+
+            <!-- The client like part -->
+            <div class="container col-md-7 mt-5 p-2 " id="scroll-container">
+
+                <!-- The title of the part -->
+                <div class="container-fluid mx-auto mb-3 d-flex justify-content-center gap-2">
+                    <img src="/images/like-icon-manager.png"
+                        alt="This is a like icon for the info book in the manager part" width="30px" height="30px" />
+                    <h4>Client Likes: </h4>
+                </div>
+
+                <!-- Search Form -->
+                <div class="container-fluid mx-auto mb-3 p-1" style="max-width: 350px;">
+                    <div class="d-flex" role="search" id="search-likes-form">
+                        <input class="form-control me-2 border border-dark rounded-3 shadow-sm" type="text"
+                            placeholder="Search: Username, Name or ID" aria-label="Search" id="search-book-likes">
+                        <button class="btn btn-outline-success rounded-3" type="button"
+                            id="clear-book-likes">Clear</button>
+                    </div>
+                </div>
+
+
+                <!-- Scrollable Container for Client Cards -->
+                <div class="scrollable-container overflow-auto p-2" style="max-height: 500px;">
+                    <div class="row p-2 " id="book-likes">
+
+                        <!--JS dynamic content added here to show clients and likes-message-->
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- The client review part -->
+            <div class="container col-md-8 mt-5 p-2 " id="scroll-container">
+
+                <!-- The title of the part -->
+                <div class="container-fluid mx-auto mb-3 d-flex justify-content-center gap-2">
+                    <h4>Client Reviews: </h4>
+                </div>
+
+                <!-- Search Form -->
+                <div class="container-fluid mx-auto mb-3 p-1" style="max-width: 350px;">
+                    <div class="d-flex" role="search">
+                        <input class="form-control me-2 border border-dark rounded-3 shadow-sm" type="text"
+                            placeholder="Search Reviews" aria-label="Search" id="search-book-reviews">
+                        <button class="btn btn-outline-success rounded-3" type="button"
+                            id="clear-book-reviews">Clear</button>
+                    </div>
+                </div>
+
+                <!-- Scrollable Container for Client Cards -->
+                <div class="scrollable-container overflow-auto p-2" style="max-height: 450px;">
+                    <div class="row p-2 " id="book-reviews">
+
+                        <!--JS dynamic content added here to show clients and their review-messages-->
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+            </script>
+        <script src="/js/info-book-manager.js" type="module"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+
+</html>
