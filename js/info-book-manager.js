@@ -344,6 +344,16 @@ function deleteButtonEdit(book,clientID,clients, keyword) {
 
         localStorage.setItem("book", JSON.stringify(books));
 
+        clients.forEach(client => {
+
+            if(client["ID"] == clientID)
+                {
+                    client["Books-liked"]= client["Books-liked"].filter(id => id != book["ID"] );
+                }
+        });
+
+        localStorage.setItem("client", JSON.stringify(clients));
+
         alert("Client Like Deleted");
 
         location.reload();
