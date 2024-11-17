@@ -1,4 +1,4 @@
-import { logoutAction } from "./manager-book-management.js";
+import { logoutAction, selectBook } from "./manager-book-management.js";
 
 //Funtion to show the info of a specific book when the info button is clicked ==> The MAIN function of this file
 function showBookInfo()
@@ -9,6 +9,8 @@ function showBookInfo()
         console.log("No bookInfo element from info-book-management file");
         return;
     }
+
+    document.title = `Book Info - ${bookInfo["Title"]}!`;
 
     detailsBookInfo(bookInfo);
 
@@ -184,7 +186,11 @@ function detailsBookInfo(bookInfo) {
     document.querySelector("#book-info-reviews").innerHTML=`${bookInfo["Reviews"].length} `;
     document.querySelector("#book-info-id").innerHTML=`${bookInfo["ID"]} `;
 
-    $("#delete-btn").click(deleteBookInfo);
+    $("#delete-btn-info").click(deleteBookInfo);
+
+    $("#edit-btn-info").on("click", () => {
+        selectBook(bookInfo["ID"],"edit");
+    });
 
 };
 
@@ -307,4 +313,4 @@ $(document).ready(function() {
 
 });
 
-export {showBookInfo};
+export {showBookInfo,deleteBookInfo};

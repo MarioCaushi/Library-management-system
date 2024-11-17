@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Book Info</title>
+    <title>Book Edit</title>
 </head>
 
 <body style="background-color: #4344431c;">
@@ -81,15 +81,15 @@
     </nav>
 
 
-    <!--Info book thing-->
+    <!--Edit book thing-->
     <div class="container-fluid mx-auto mt-4 d-flex justify-content-center gap-2">
-        <img src="/images/book-info-manager-icon.png" alt="This is an info icon for the info book in the manager part"
+        <img src="/images/edit-book-icon.png" alt="This is an eidt icon for the edit book in the manager part"
             width="30px" height="30px" />
-        <h4>Book Information</h4>
+        <h4>Book Edit</h4>
     </div>
 
 
-    <!--The actual Book Showing structure-->
+    <!--The actual Book Showing Edit structure-->
     <div class="container-fluid m-2 p-2 mx-auto" id="book-container">
 
         <!--The book preview (Image and Details)-->
@@ -98,52 +98,83 @@
             <!-- Image Container -->
             <div class="col-8 col-md-4 m-3 mx-auto" id="book-image-container">
                 <!--JS Dynamic Content-->
+                <img class="img-fluid rounded-4 border shadow-lg" alt="This is the book cover photo"
+                    id="cover-image-edit">
             </div>
 
-            <!-- Book Info Container -->
+            <!-- Book Info-Edit Container -->
             <div class="col-10 col-md-7 m-2" id="book-info-container">
 
-                <div class="container-fluid m-1 p-1 mx-auto" id="book-title-container">
-                    <!--JS Dynamic Content-->
+                <div class="container-fluid m-2 p-1 mx-auto fw-bold ">
+                    <label for="title-input-book" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title-edit-book" placeholder="Title should be unique" />
                 </div>
 
-                <div class="container-fluid m-1 p-1" id="book-description-container">
-                    <!--JS Dynamic Content-->
+                <div class="container-fluid m-2 p-1 fw-bold " id="book-description-container">
+                    <label for="description-input-book" class="form-label">Description</label>
+                    <textarea class="form-control" id="description-edit-book" rows="4"
+                        placeholder="Write the book description here."></textarea>
                 </div>
 
                 <div class="container-fluid m-2">
                     <div class="row mx-auto">
                         <!-- Author -->
-                        <div class="col-12 col-md-3 fw-bold mb-2">Author:</div>
-                        <div class="col-12 col-md-9 mb-2" id="book-info-author"><!--JS Dynamic Content--></div>
+                        <div class="col-12 col-md-6 fw-bold mb-3">
+                            <label for="author-input-book" class="form-label">Author</label>
+                            <input type="text" class="form-control" id="author-edit-book" />
+                        </div>
 
                         <!-- Genre -->
-                        <div class="col-12 col-md-3 fw-bold mb-2">Genre:</div>
-                        <div class="col-12 col-md-9 mb-2" id="book-info-genre"><!--JS Dynamic Content--></div>
+                        <div class="col-12 col-md-6 fw-bold mb-3">
+                            <label for="genre-input-book" class="form-label">Genre</label>
+                            <input type="text" class="form-control" id="genre-edit-book" />
+                        </div>
 
                         <!-- Published Year -->
-                        <div class="col-12 col-md-3 fw-bold mb-2">Published Year:</div>
-                        <div class="col-12 col-md-9 mb-2" id="book-info-year"><!--JS Dynamic Content--></div>
+                        <div class="col-12 col-md-4 fw-bold mb-3">
+                            <label for="year-input-book" class="form-label">Year</label>
+                            <input type="number" class="form-control" id="year-edit-book" />
+                        </div>
 
                         <!-- Price -->
-                        <div class="col-12 col-md-3 fw-bold mb-2">Price:</div>
-                        <div class="col-12 col-md-9 mb-2" id="book-info-price"><!--JS Dynamic Content--></div>
+                        <div class="col-12 col-md-4 fw-bold mb-3">
+                            <label for="price-input-book" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="price-edit-book" step="0.01" min="0" />
+                        </div>
 
                         <!-- Rating -->
-                        <div class="col-12 col-md-3 fw-bold mb-2">Rating:</div>
-                        <div class="col-12 col-md-9 mb-2" id="book-info-rating"><!--JS Dynamic Content--></div>
+                        <div class="col-12 col-md-4 fw-bold mb-3">
+                            <label for="rating-input-book" class="form-label">Rating</label>
+                            <input type="number" class="form-control" id="rating-edit-book" step="0.01" min="0"
+                                max="10" />
+                        </div>
 
-                        <!-- No. Likes -->
-                        <div class="col-12 col-md-3 fw-bold mb-2">No. Likes:</div>
-                        <div class="col-12 col-md-9 mb-2" id="book-info-likes"><!--JS Dynamic Content--></div>
+                        <div class="container-fluid fw-bold p-3">
+                            <label for="image-input-book" class="form-label">Cover Image URL</label>
+                            <input type="url" class="form-control" id="image-edit-book" placeholder="New Image URL" />
+                        </div>
 
-                        <!-- No. Reviews -->
-                        <div class="col-12 col-md-3 fw-bold mb-2">No. Reviews:</div>
-                        <div class="col-12 col-md-9 mb-2" id="book-info-reviews"><!--JS Dynamic Content--></div>
+                        <!--Non-Editable container-->
+                        <div class="d-flex flex-wrap m-2 mt-3">
+                            <!-- No. Likes -->
+                            <div class="d-flex col-12 col-md-4 align-items-center mb-2">
+                                <div class="fw-bold me-2">No. Likes:</div>
+                                <div id="book-edit-likes"><!--JS Dynamic Content--> </div>
+                            </div>
 
-                        <!-- ID -->
-                        <div class="col-12 col-md-3 fw-bold mb-2">ID:</div>
-                        <div class="col-12 col-md-9 mb-2" id="book-info-id"><!--JS Dynamic Content--></div>
+                            <!-- No. Reviews -->
+                            <div class="d-flex col-12 col-md-4 align-items-center mb-2">
+                                <div class="fw-bold me-2">No. Reviews:</div>
+                                <div id="book-edit-reviews"><!--JS Dynamic Content--> </div>
+                            </div>
+
+                            <!-- ID -->
+                            <div class="d-flex col-12 col-md-4 align-items-center mb-2">
+                                <div class="fw-bold me-2">ID:</div>
+                                <div id="book-edit-id"><!--JS Dynamic Content--> </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -151,12 +182,16 @@
                 <div class="container d-flex justify-content-center gap-2 mt-5">
                     <button type="button" class="btn"
                         style="background-color: #f2d7d5; color: #c0392b; border: 1px solid #c0392b;"
-                        id="delete-btn-info">Delete</button>
+                        id="delete-btn-edit">Delete</button>
                     <button type="button" class="btn"
                         style="background-color: #d5eaf3; color: #2980b9; border: 1px solid #2980b9;"
-                        onclick="window.close()">Go Back</button>
+                        id="discard-btn-edit">Discard</button>
                     <button type="button" class="btn"
-                        style="background-color: #d5f5e3; color: #27ae60; border: 1px solid #27ae60;" id="edit-btn-info">Edit</button>
+                        style="background-color: #fff3e6; color: #f39c12; border: 1px solid #f39c12;"
+                        id="info-btn-edit">Info</button>
+                    <button type="button" class="btn"
+                        style="background-color: #d5f5e3; color: #27ae60; border: 1px solid #27ae60;"
+                        id="save-btn-edit">Save</button>
                 </div>
 
             </div>
@@ -236,8 +271,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
             </script>
-        <script src="/js/info-book-manager.js" type="module"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="/js/edit-book-management.js" type="module"></script>
 </body>
 
 </html>

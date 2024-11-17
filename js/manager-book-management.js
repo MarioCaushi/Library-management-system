@@ -11,7 +11,7 @@ function logoutAction(){
             console.log("Manager logged out");
             window.location.href="index.html";
         }
-}
+};
 
 //Function to check if the localStorage is valid and if not then fetching the data from the Data.json file again 
 //using the imported function 
@@ -35,7 +35,7 @@ function dataValidation(){
                     fetchData();
                 }
         }
-}
+};
 
 //Getting the list of books from local storage
 const books=JSON.parse(localStorage.getItem("book"));
@@ -87,10 +87,16 @@ function showBooks(books) {
 
         const infoButton = card.querySelector(`#info-${bookID}`);
         infoButton.addEventListener("click", function () {
-            infoBook(bookID);
+            selectBook(bookID,"info");
         });
+
+        const editButton = card.querySelector(`#edit-${bookID}`);
+        editButton.addEventListener("click", function () {
+            selectBook(bookID,"edit");
+        });
+
     });
-}
+};
 
 // Function for searching 
 function search(books) {
@@ -101,7 +107,7 @@ function search(books) {
     const searchBooks = searchHelper(books, searchValue);
     console.log(searchBooks); //Debugging purposes
     showBooks(searchBooks);
-}
+};
 
 
 // Creating a helper function to find the books with a certain keyword
@@ -132,7 +138,7 @@ function searchHelper(books, word) {
         
         return searchBooks;
     }
-}
+;}
 
 //Funtion to delete a book
 function deleteBook(id, books) {
@@ -151,9 +157,10 @@ function deleteBook(id, books) {
     
         showBooks(updatedBooks);
     }
-}
+};
 
-function infoBook(id) {
+//Function to give functionality to edit and info book 
+function selectBook(id,keyword) {
 
     const books = JSON.parse(localStorage.getItem("book"));
     if (!books) {
@@ -169,8 +176,15 @@ function infoBook(id) {
 
     localStorage.setItem("selectedBook", JSON.stringify(bookInfo));
 
-    window.location.href = "info-book-manager.html";
-}
+    if(keyword =="info"){
+        window.open("info-book-manager.html", "_blank");
+    }
+    
+    if(keyword =="edit"){
+        window.open("edit-book-management.html", "_blank");
+    }
+};
+
 
 document.addEventListener("DOMContentLoaded", function() {
     try {
@@ -193,4 +207,4 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-export {logoutAction };
+export {logoutAction, selectBook };
