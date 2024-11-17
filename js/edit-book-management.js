@@ -1,5 +1,5 @@
 import { logoutAction, selectBook } from "./manager-book-management.js";
-import { deleteBookInfo } from "./info-book-manager.js";
+import { deleteBookInfo, showBookLikes, showBookReviews } from "./info-book-manager.js";
 
 //Function to show the book details page
 function showEditBook(){
@@ -15,7 +15,6 @@ function showEditBook(){
 
     showBookDetails(editBook);
 
-
     $("#delete-btn-edit").on("click", deleteBookInfo );
 
     $("#discard-btn-edit").on("click", () => {
@@ -29,6 +28,15 @@ function showEditBook(){
         saveEditBook(editBook);
     });
 
+    const clientLikes = editBook["Likes-clients"].length;
+    console.log("Book-likes length: ", clientLikes);
+
+    showBookLikes(clientLikes,editBook,"edit");
+
+    const clientReviews =  editBook["Reviews"].length;
+    console.log("Book-reviews length: ", clientReviews);
+
+    showBookReviews(clientReviews, editBook, "edit");
 
 };
 
