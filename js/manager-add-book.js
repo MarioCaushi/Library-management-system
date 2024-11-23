@@ -1,4 +1,5 @@
 import { logoutAction } from "./manager-book-management.js";
+import { fetchData } from "./index.js";
 
 //Function to evaluate the add-book form
 function bookFormEvaluation(event)
@@ -24,6 +25,11 @@ function bookFormEvaluation(event)
     console.log("URL: ",url);
     console.log("Description: ",description);
     
+    if(localStorage.length==0)
+        {
+            fetchData();
+        }
+
     const books = JSON.parse(localStorage.getItem("book"));
     console.log("Books from local-storage: ",books);
 
