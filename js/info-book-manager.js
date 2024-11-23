@@ -89,7 +89,8 @@ function showReviews(reviews,clients, keyword, book) {
             </div>`
         );
         if(keyword=="info"){ 
-            $(`#btn-details-reviews-${clientInfo['ID']}`).on("click", detailsClientInfo);
+            $(`#btn-details-reviews-${clientInfo['ID']}`).on("click", () => {  
+                detailsClientInfo(clientInfo['ID'])} );
         }
         if(keyword=="edit"){
             $(`#btn-delete-reviews-${clientInfo['ID']}`).on("click", () => { 
@@ -205,8 +206,23 @@ function detailsBookInfo(bookInfo) {
 
 
 //Function for the details button of client-likes cards
-function detailsClientInfo() {
-    alert("This feature is yet to be added");
+function detailsClientInfo(id) {
+
+    const clients = JSON.parse(localStorage.getItem("client"));
+    if (!clients) {
+        console.error("No client data found in localStorage.");
+        return;
+    }
+
+    const clientInfo = clients.find(client => client["ID"] == id);
+    if (!clientInfo) {
+        console.error("No matching client found for the given ID.");
+        return;
+    }
+
+    localStorage.setItem("selectedBook", JSON.stringify(clientInfo));
+
+    window.open("info-client-manager.html", "_blank");
 };
 
 
@@ -254,7 +270,8 @@ function  showClients(likedClients,keyword, bookInfo,clients) {
         );
 
         if(keyword=="info"){
-            $(`#btn-details-likes-${clientInfo['ID']}`).on("click", detailsClientInfo);
+            $(`#btn-details-likes-${clientInfo['ID']}`).on("click", () => {  
+                detailsClientInfo(clientInfo['ID'])} );
         }
 
         if(keyword=="edit"){
@@ -386,8 +403,6 @@ function deleteButtonEdit(book,clientID,clients, keyword) {
     }
 
 };
-
-
 
 //The actual function callings
 $(document).ready(function() {
