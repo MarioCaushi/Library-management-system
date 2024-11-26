@@ -90,7 +90,7 @@ function showReviews(reviews,clients, keyword, book) {
         );
         if(keyword=="info"){ 
             $(`#btn-details-reviews-${clientInfo['ID']}`).on("click", () => {  
-                detailsClientInfo(clientInfo['ID'])} );
+                detailsClientInfo(clientInfo['ID'],clients)} );
         }
         if(keyword=="edit"){
             $(`#btn-delete-reviews-${clientInfo['ID']}`).on("click", () => { 
@@ -206,9 +206,8 @@ function detailsBookInfo(bookInfo) {
 
 
 //Function for the details button of client-likes cards
-function detailsClientInfo(id) {
+function detailsClientInfo(id,clients) {
 
-    const clients = JSON.parse(localStorage.getItem("client"));
     if (!clients) {
         console.error("No client data found in localStorage.");
         return;
@@ -220,7 +219,7 @@ function detailsClientInfo(id) {
         return;
     }
 
-    localStorage.setItem("selectedBook", JSON.stringify(clientInfo));
+    localStorage.setItem("selectedClient", JSON.stringify(clientInfo));
 
     window.open("info-client-manager.html", "_blank");
 };
@@ -271,7 +270,7 @@ function  showClients(likedClients,keyword, bookInfo,clients) {
 
         if(keyword=="info"){
             $(`#btn-details-likes-${clientInfo['ID']}`).on("click", () => {  
-                detailsClientInfo(clientInfo['ID'])} );
+                detailsClientInfo(clientInfo['ID'],clients)} );
         }
 
         if(keyword=="edit"){
