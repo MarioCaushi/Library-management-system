@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>info-client-manager</title>
+    <style>
+        /* *{
+            border: black solid 1px;
+        } */
+        .btn-outline-primary {
+            border-color: #6b8bca;
+            color: #6b8bca;
+        }
+
+        .btn-outline-primary:hover,
+        .btn-outline-primary:focus {
+            background-color: #6b8bca;
+            color: white;
+        }
+
+        .btn-outline-secondary {
+            border-color: #c781bf;
+            color: #c781bf;
+        }
+
+        .btn-outline-secondary:hover,
+        .btn-outline-secondary:focus {
+            background-color: #c781bf;
+            color: white;
+        }
+
+        .btn-outline-success {
+            border-color: #77537b;
+            color: #77537b;
+        }
+
+        .btn-outline-success:hover,
+        .btn-outline-success:focus {
+            background-color: #77537b;
+            color: white;
+        }
+
+        .tabContainer {
+            width: 100%;
+            height: 350px;
+        }
+
+        .tabContainer .buttonContainer {
+            height: 15%;
+        }
+
+        .tabContainer .buttonContainer button {
+            width: 25%;
+            height: 100%;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px;
+            font-family: sans-serif;
+            font-size: 18px;
+            background-color: #eee;
+        }
+
+        .tabContainer .buttonContainer button:hover {
+            background-color: #d7d4d4;
+        }
+
+        .tabContainer .tabPanel {
+            height: 85%;
+            background-color: gray;
+            color: white;
+            text-align: center;
+            padding-top: 105px;
+            box-sizing: border-box;
+            font-family: sans-serif;
+            font-size: 22px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body style="background-color: #4344431c;">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border border-dark border-opacity-50 rounded-3 shadow-sm m-2">
+
+        <div class="container-fluid">
+
+            <div class="me-auto">
+                <img src="images/manager-navbar-icon.png" alt="Manager Navbar Icon" width="50px" height="50px" />
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-dropdown"
+                aria-controls="navbar-dropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse p-1" id="navbar-dropdown">
+
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item m-2">
+                        <a class="nav-link" aria-current="page" href="manager-welcome.html">Home</a>
+                    </li>
+                    <li class="nav-item dropdown m-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Client Management
+                        </a>
+                        <ul class="dropdown-menu border border-dark border-opacity-50 rounded-3 shadow-sm">
+                            <li>
+                                <a class="dropdown-item" href="manager-client-management.html">
+                                    View Clients
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="register.html">
+                                    Add Client
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown m-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Book Management
+                        </a>
+                        <ul class="dropdown-menu border border-dark border-opacity-50 rounded-3 shadow-sm">
+                            <li>
+                                <a class="dropdown-item" href="manager-book-management.html">
+                                    View Books
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="add-book-manager.html">
+                                    Add Book
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="ms-auto">
+                <button type="button" class="btn btn-outline-danger" id="logout-button">Log Out</button>
+            </div>
+
+        </div>
+
+    </nav>
+
+    <div class="container-fluid mx-auto mt-5 d-flex justify-content-center gap-2">
+        <img src="/images/book-info-manager-icon.png" alt="This is an info icon for the info client in the manager part"
+            width="30px" height="30px" />
+        <h4>Client Information</h4>
+    </div>
+
+    <div class="card shadow-sm mb-3" style="max-width: 1200px; margin: 35px auto 0;">
+        <!-- Card Header -->
+        <div class="card-header d-flex flex-column align-items-center text-white" style="background-color:  #602f74;">
+            <!-- Profile Image -->
+            <img src="images/profile icon.png" alt="Profile Icon" class="rounded-circle me-3"
+                style="width: 40px; height: 40px;">
+            <!-- Name and Surname -->
+            <div>
+                <strong id="client-name">Name Surname</strong>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Email:</strong> <span id="client-email"></span></li>
+                <li class="list-group-item"><strong>Birthday:</strong> <span id="client-birthday"></span></li>
+                <li class="list-group-item"><strong>Username:</strong> <span id="client-username"></span></li>
+                <li class="list-group-item"><strong>Password:</strong> <span id="client-password"></span></li>
+                <li class="list-group-item"><strong>ID:</strong> <span id="client-id"></span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <button type="button" class="btn btn-outline-danger mx-3">Delete</button>
+        <button type="button" class="btn btn-outline-secondary mx-3" onclick="window.close()">Go Back</button>
+        <button type="button" class="btn btn-outline-success mx-3">Edit</button>
+    </div>
+    </div>
+
+    <!-- The part that changes tabs-->
+    <div class="card text-center mt-5 border shadow-lg" style="max-width: 1200px; margin: 35px auto 50px;">
+        <div class="card-header" style="background-color: #81b8b1;">
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link" style="color:black;" id="purchased-tab" data-bs-toggle="tab"
+                        aria-controls="purchased" aria-selected="true">Purchased </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" style="color:black;" id="liked-tab" data-bs-toggle="tab"
+                        aria-controls="liked" aria-selected="false"> Liked</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" style="color:black;" id="reviewed-tab" data-bs-toggle="tab"
+                        aria-controls="reviewed" aria-selected="false"> Reviewed </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Scrollable Container -->
+            <div class="scrollable-container overflow-auto p-3" style="max-height: 500px; border-radius: 5px;">
+                <div class="row p-3" id="book-cards">
+
+                    <div style="color: #81b8b1;"> Click a tab to show content</div>
+                    <!-- Dynamically added JS content-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
+        </script>
+    <script type="module" src="./js/info-client-manager.js"></script>
+</body>
+
+</html>
