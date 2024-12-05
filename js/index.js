@@ -51,7 +51,7 @@ function evaluateLogin() {
             //If user credentials added successfull then you need to redirct to your own page
             console.log("User logged in successfully!");
             localStorage.setItem("user", JSON.stringify(user));
-            window.location.href = "client-welcome.html";
+            window.location.href = "book-browse.html";
         } else {
             document.getElementById("login-evaluation").innerHTML = "<p class='text-danger small'>User does not exist!</p>";
         }
