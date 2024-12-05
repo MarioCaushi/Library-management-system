@@ -21,7 +21,7 @@ const renderAllBooks = () => {
         <span id="book-price">$${book.Price} USD</span>
         <button id="like-btn">
             <i class="fas fa-heart"></i>Like
-            <span class="like-count">${book["Likes-clients"].length}</span>
+            <span class="like-count" id="like-count">${book["Likes-clients"].length}</span>
         </button>
         <br>
         <button id="cart-btn" onclick="addBookToCart(${book.ID})">
@@ -256,6 +256,16 @@ const addBookToCart = (bookId) => {
   }, 3000);
 };
 
+$("#go-cart-button").click(function (e) {
+  localStorage.setItem("cartBooks", JSON.stringify(cartBooks));
+  window.location.href = "krist.html";
+});
+
+$("#logout-button").click(function () {
+  localStorage.clear();
+  window.location.href = "index.html";
+});
+
 const navbar = document.getElementsByClassName("navbar")[0];
 const sticky = navbar.offsetTop;
 
@@ -269,9 +279,4 @@ function stickyNavbar() {
 window.onscroll = function () {
   stickyNavbar();
 };
-
-$("#go-cart-button").click(function (e) {
-  localStorage.setItem("cartBooks", JSON.stringify(cartBooks));
-  window.location.href = "krist.html";
-});
 renderAllBooks();

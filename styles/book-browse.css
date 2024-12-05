@@ -142,7 +142,8 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-#like-btn:hover {
+#like-btn:hover,
+.active {
   background-color: #c82333;
   transform: scale(1.05);
 }
@@ -227,4 +228,32 @@ body {
 }
 .pulsating {
   animation: pulse 1.5s infinite;
+}
+
+.logout-button {
+  background-color: #f44336; /* Red background for Logout */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logout-button i {
+  margin-right: 8px;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f;
+  transform: scale(1.02);
+  -webkit-transform: scale(1.02);
+  -moz-transform: scale(1.02);
+  -ms-transform: scale(1.02);
+  -o-transform: scale(1.02);
 }
