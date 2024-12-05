@@ -29,20 +29,38 @@ function showClientInfo() {
   container.innerHTML = "";
 
   const client = JSON.parse(localStorage.getItem("user"));
-
+  console.log(client);
   if (!client) {
     container.innerHTML = `<p>Error: No client data found. Please try again later.</p>`;
     return;
   }
 
-  const { Name, LastName, Username, Email } = client;
+  const { Name, LastName, Username, Email, Birthday } = client;
 
   container.innerHTML = `
       <div class="text-center">
-        <h3>${Name} ${LastName}</h3>
-        <p><strong>UserName:</strong> ${Username}</p>
-        <p><strong>Email:</strong> ${Email}</p>
-      </div>
+    <h3>
+      <strong>Name:</strong> 
+      <span contenteditable="true" class="editable" id="name">${Name}</span>
+    </h3>
+    <h3>
+      <strong>Last Name:</strong> 
+      <span contenteditable="true" class="editable" id="lastName">${LastName}</span>
+    </h3>
+    <p>
+      <strong>UserName:</strong> 
+      <span contenteditable="true" class="editable" id="username">${Username}</span>
+    </p>
+    <p>
+      <strong>Email:</strong> 
+      <span contenteditable="true" class="editable" id="email">${Email}</span>
+    </p>
+    <p>
+      <strong>Birthday:</strong> 
+      <span contenteditable="true" class="editable" id="birthday">${Birthday}</span>
+    </p>
+  </div>
+  <button class="save-button" onclick="saveChanges()">Save Changes</button>
     `;
 
   const logoutButton = document.getElementById("logout-button");
