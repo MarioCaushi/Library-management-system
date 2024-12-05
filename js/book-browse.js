@@ -19,9 +19,9 @@ const renderAllBooks = () => {
         <span id="book-year">Published Year: ${book["Published Year"]}</span>
         <span id="book-rating">Rating: ${book.Rating} / 5</span>
         <span id="book-price">$${book.Price} USD</span>
-        <button id="like-btn">
+        <button id="like-btn" onclick="checkUserLikes(${book.ID})">
             <i class="fas fa-heart"></i>Like
-            <span class="like-count" id="like-count">${book["Likes-clients"].length}</span>
+            <span class="like-count" id="like-count${book.ID}">${book["Likes-clients"].length}</span>
         </button>
         <br>
         <button id="cart-btn" onclick="addBookToCart(${book.ID})">
@@ -77,7 +77,7 @@ const renderbookInfo = (bookID) => {
   <div class="add-review">
     <h3>Add Your Review</h3>
     <textarea id="review-input" placeholder="Write your review here..." rows="4" cols="50"></textarea>
-    <button id="submit-review" onclick="submitReview(${bookID})">Submit Review</button>
+    <button id="submit-review" onclick="submitReview()">Submit Review</button>
   </div>
   <h3>Reviews:</h3>
   <div id="reviews-container">`;
@@ -288,7 +288,7 @@ const addBookToCart = (bookID) => {
   }, 3000);
 };
 
-const submitReview = (bookID) => {
+const submitReview = () => {
   const reviewInput = document.getElementById("review-input").value;
 
   if (reviewInput.trim() === "") {
@@ -305,6 +305,18 @@ const submitReview = (bookID) => {
 
   document.getElementById("reviews-container").innerHTML += newReviewTemplate;
   document.getElementById("review-input").value = "";
+};
+
+const checkUserLikes = (bookID) => {
+  if (user["Books-liked"].includes(bookID)) {
+    $("#like-count" + bookID).text(
+      books[bookID - 1]["Likes-clients"].length - 1
+    );
+  } else {
+    $("#like-count" + bookID).text(
+      books[bookID - 1]["Likes-clients"].length + 1
+    );
+  }
 };
 
 $("#go-cart-button").click(function (e) {
