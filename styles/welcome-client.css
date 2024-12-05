@@ -1,150 +1,145 @@
-
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7f6;
-    color: #333;
-    line-height: 1.6;
-    padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7f6;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
 }
-
 
 .container {
-    display: flex;
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+  display: flex;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
-
-
 .client-card {
-    width: 40%;
-    height: 100vh; 
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    position: relative;
+  width: 40%;
+  height: 100vh;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  position: relative;
 }
 
 .profile-icon img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px;
-    border: 4px solid #6c757d; 
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 4px solid #6c757d;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
-
+.client-info {
+  justify-content: center;
+  align-items: center;
+}
 .client-info h3 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #343a40;
-    margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #343a40;
+  margin-bottom: 10px;
 }
 
 .client-info p {
-    font-size: 16px;
-    color: #6c757d;
+  font-size: 16px;
+  color: #6c757d;
 }
 
-
 .main-content {
-    width: 60%;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 60%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .main-content h1 {
-    font-size: 32px;
-    font-weight: bold;
-    color: #495057;
-    margin-bottom: 15px;
+  font-size: 32px;
+  font-weight: bold;
+  color: #495057;
+  margin-bottom: 15px;
 }
 
 .main-content .section {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .main-content .stats {
-    background-color: #f8f9fa;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 15px;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
 .main-content .stats p {
-    font-size: 16px;
-    color: #495057;
+  font-size: 16px;
+  color: #495057;
 }
 
 .button-container {
-    display: flex;
-    justify-content: center; 
-    align-items: center;     
-    gap: 15px;               
-    margin-top: 20px;        
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
 }
 
-
 button {
-    width: auto;
-    background-color: #5c8371;
-    border: none;
-    color: #fff;
-    padding: 15px;
-    font-size: 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
+  width: auto;
+  background-color: #5c8371;
+  border: none;
+  color: #fff;
+  padding: 15px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #1e5c47;
+  background-color: #1e5c47;
 }
 
-
 .section ul {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 .section ul li {
-    margin: 10px 0;
-    font-size: 16px;
-    color: #495057;
+  margin: 10px 0;
+  font-size: 16px;
+  color: #495057;
 }
 
-
 @media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-        gap: 20px;
-    }
+  .container {
+    flex-direction: column;
+    gap: 20px;
+  }
 
-    .client-card {
-        width: 100%;
-        height: auto;
-    }
+  .client-card {
+    width: 100%;
+    height: auto;
+  }
 
-    .main-content {
-        width: 100%;
-    }
+  .main-content {
+    width: 100%;
+  }
 
-    button {
-        font-size: 12px;
-        padding: 6px 12px;
-    }
+  button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
 }

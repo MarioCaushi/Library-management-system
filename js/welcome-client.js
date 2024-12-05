@@ -59,8 +59,8 @@ function showClientInfo() {
       <strong>Birthday:</strong> 
       <span contenteditable="true" class="editable" id="birthday">${Birthday}</span>
     </p>
+    <button class="save-button" onclick="saveChanges()">Save Changes</button>
   </div>
-  <button class="save-button" onclick="saveChanges()">Save Changes</button>
     `;
 
   const logoutButton = document.getElementById("logout-button");
