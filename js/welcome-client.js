@@ -33,7 +33,6 @@ function showClientInfo() {
     const container = document.getElementById("welcomeClient-container");
     container.innerHTML = ""; 
   
-    /
     const client = JSON.parse(localStorage.getItem("user"));
   
     

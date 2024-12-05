@@ -32,9 +32,7 @@ function showManagerInfo() {
     const container = document.getElementById("welcomeAdmin-container");
     container.innerHTML = ""; 
   
-    
     const manager = JSON.parse(localStorage.getItem("manager"));
-  
     
     if (!manager) {
       container.innerHTML = `<p>Error: No manager data found. Please try again later.</p>`;
@@ -43,7 +41,6 @@ function showManagerInfo() {
   
     const { Name, LastName, Email, Birthday, Username } = manager;
   
-    /
     container.innerHTML = `
       <div class="text-center">
         <h3>${Name} ${LastName}</h3>
@@ -53,7 +50,6 @@ function showManagerInfo() {
       </div>
     `;
   
-    
     const logoutButton = document.getElementById("logout-button");
     logoutButton.addEventListener("click", logoutAction);
   }
@@ -78,7 +74,6 @@ function navigateTo(page) {
   
   export { navigateTo };
   
-
 
 function initializeWelcomePage() {
   dataValidation();
