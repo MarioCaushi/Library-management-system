@@ -73,7 +73,14 @@ const renderbookInfo = (bookID) => {
         `;
 
   const specificBookReviews = specificBook.Reviews;
-  bookInfoTemplate += `<div id="reviews-container"><h3>Reviews:</h3>`;
+  bookInfoTemplate += `
+  <div class="add-review">
+    <h3>Add Your Review</h3>
+    <textarea id="review-input" placeholder="Write your review here..." rows="4" cols="50"></textarea>
+    <button id="submit-review" onclick="submitReview(${bookID})">Submit Review</button>
+  </div>
+  <h3>Reviews:</h3>
+  <div id="reviews-container">`;
   specificBookReviews.forEach((review) => {
     bookInfoTemplate += `
       <div class="review">
@@ -231,7 +238,6 @@ const renderbookInfo = (bookID) => {
   margin-right: 8px; 
 }
 
-/* Hover effect */
 .go-back:hover {
   background-color: #ff6347; 
   transform: scale(1.3);
@@ -240,13 +246,39 @@ const renderbookInfo = (bookID) => {
   -ms-transform: scale(1.02);
   -o-transform: scale(1.02);
 }
+  .add-review {
+  margin-top: 20px;
+}
+
+#review-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+}
+
+#submit-review {
+  margin: 10px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#submit-review:hover {
+  background-color: #45a049;
+}
   </style>
   `;
   bookStyling.innerHTML += bookStylingTemplate;
 };
 
-const addBookToCart = (bookId) => {
-  cartBooks.push(books[bookId - 1]);
+const addBookToCart = (bookID) => {
+  cartBooks.push(books[bookID - 1]);
   console.log(cartBooks);
 
   const cartButton = document.getElementById("cart-button-container");
@@ -254,6 +286,25 @@ const addBookToCart = (bookId) => {
   setTimeout(function () {
     cartButton.classList.remove("pulsating");
   }, 3000);
+};
+
+const submitReview = (bookID) => {
+  const reviewInput = document.getElementById("review-input").value;
+
+  if (reviewInput.trim() === "") {
+    alert("Please write a review before submitting.");
+    return;
+  }
+
+  const newReviewTemplate = `
+    <div class="review">
+        <span id="review-header"><strong>${user.Username}</strong> has left a review: </span>
+        <p id="review-content">${reviewInput}</p>
+      </div>
+  `;
+
+  document.getElementById("reviews-container").innerHTML += newReviewTemplate;
+  document.getElementById("review-input").value = "";
 };
 
 $("#go-cart-button").click(function (e) {
