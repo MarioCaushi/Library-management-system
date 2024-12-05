@@ -1,5 +1,8 @@
 books = JSON.parse(localStorage.getItem("book"));
 clients = JSON.parse(localStorage.getItem("client"));
+user = JSON.parse(localStorage.getItem("user"));
+cartBooks = [];
+
 const renderAllBooks = () => {
   let pageContainer = document.getElementById("books-container");
   pageContainer.innerHTML = "";
@@ -8,24 +11,24 @@ const renderAllBooks = () => {
   let booksTemplate = "";
 
   books.forEach((book) => {
-    booksTemplate +=
-      '<li class="book-container" id="' +
-      book.ID +
-      '"onclick="renderbookInfo(' +
-      book.ID +
-      ')"><img id="cover-img" src="' +
-      book["Cover Image URL"] +
-      '"/><div id="book-details"><h2 id="book-title" >' +
-      book.Title +
-      '</h2><span id="book-author">Author: ' +
-      book.Author +
-      '</span><span id="book-year">Published Year: ' +
-      book["Published Year"] +
-      '</span><span id="book-rating">Rating: ' +
-      book.Rating +
-      ' / 5</span><span id="book-price">$' +
-      book.Price +
-      ' USD</span><button id="like-btn"><i class="fas fa-heart"></i>Like<span class="like-count">123</span></button><br><button id="cart-btn"><i class="fas fa-shopping-cart"></i>Add to Cart</button></div></li>';
+    booksTemplate += `<li class="book-container" id="${book.ID}" >
+    <img id="cover-img" src="${book["Cover Image URL"]}"/>
+    <div id="book-details">
+        <h2 id="book-title" onclick="renderbookInfo(${book.ID})">${book.Title}</h2>
+        <span id="book-author">Author: ${book.Author}</span>
+        <span id="book-year">Published Year: ${book["Published Year"]}</span>
+        <span id="book-rating">Rating: ${book.Rating} / 5</span>
+        <span id="book-price">$${book.Price} USD</span>
+        <button id="like-btn">
+            <i class="fas fa-heart"></i>Like
+            <span class="like-count">${book["Likes-clients"].length}</span>
+        </button>
+        <br>
+        <button id="cart-btn" onclick="addBookToCart(${book.ID})">
+            <i class="fas fa-shopping-cart"></i>Add to Cart
+        </button>
+    </div>
+</li>`;
   });
 
   document.getElementById("book-grid").innerHTML += booksTemplate;
@@ -107,8 +110,7 @@ const renderbookInfo = (bookID) => {
 
     #specific-book-container {
       display: flex;
-      width: 100%;
-      // max-width: 1200px;
+      width: 100%;  
       background-color: #fff;
       border-radius: 12px;
       overflow: hidden;
@@ -182,7 +184,6 @@ const renderbookInfo = (bookID) => {
     }
 
     #reviews-container h3 {
-
       font-size: 24px;
       margin-bottom: 10px;
     }
@@ -203,9 +204,24 @@ const renderbookInfo = (bookID) => {
     .review strong {
       color: #333;
     }
+
+    @media (max-width: 768px) {
+      .book-details {
+        flex-direction: column;
+      }
+
+      #specific-cover-image, #specific-book-info {
+        width: 100%;
+      }
+    }
   </style>
   `;
   bookStyling.innerHTML += bookStylingTemplate;
+};
+
+const addBookToCart = (bookId) => {
+  cartBooks.push(books[bookId - 1]);
+  alert(books[bookId].Author);
 };
 
 /*
@@ -235,9 +251,5 @@ const renderbookInfo = (bookID) => {
   </div>
 </div>
 */
-
-const renderBookReviews = () => {
-  console.log("Hello");
-};
 
 renderAllBooks();

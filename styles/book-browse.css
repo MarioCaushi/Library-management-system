@@ -150,9 +150,34 @@ body {
 #like-btn:active {
   background-color: #bd2130;
   transform: scale(0.98);
+  -webkit-transform: scale(0.98);
+  -moz-transform: scale(0.98);
+  -ms-transform: scale(0.98);
+  -o-transform: scale(0.98);
 }
 
 #like-count {
   font-weight: bold;
   font-size: 16px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333;
+  padding: 10px 20px;
+  color: white;
+}
+.navbar .cart-button {
+  background-color: #ff6347;
+  border: none;
+  padding: 10px 15px;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 5px;
+}
+.navbar .cart-button i {
+  margin-right: 8px;
 }
