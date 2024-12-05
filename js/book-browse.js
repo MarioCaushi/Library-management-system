@@ -221,7 +221,13 @@ const renderbookInfo = (bookID) => {
 
 const addBookToCart = (bookId) => {
   cartBooks.push(books[bookId - 1]);
-  alert(books[bookId].Author);
+  console.log(cartBooks);
+
+  const cartButton = document.getElementById("cart-button-container");
+  cartButton.classList.add("pulsating");
+  setTimeout(function () {
+    cartButton.classList.remove("pulsating");
+  }, 3000);
 };
 
 /*
