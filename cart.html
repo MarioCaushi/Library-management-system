@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="styles/cart.css" />
@@ -25,7 +26,7 @@
       </table>
       <div class="total" id="total-price">Total: $0.00</div>
       <div class="button-container">
-        <a href="#" class="purchase-btn">Purchase</a>
+        <button class="purchase-btn" id="purchase-btn">Purchase</button>
         <button class="manage-books-btn" id="go-back-btn" onclick="goToStore()">
           Go Back
         </button>

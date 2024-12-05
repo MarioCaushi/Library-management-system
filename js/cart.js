@@ -14,9 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const cartItem = cart.find((item) => item.ID === bookId);
         if (cartItem) {
-          cartItem.quantity += 1;
+          cartItem.quantity = 1;
         } else {
-          cart.push({ ...book, quantity: 1 });
+          cart.push({ ...cartItem, quantity: 1 });
         }
 
         renderCart();
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   class="quantity-input" 
                   value="${item.quantity}" 
                   min="1" 
-                  onchange="updateQuantity(${item.ID}, this.value)">
+                  onchange="updateQuantity(${item.ID}, Number(this.value))">
               </td>
               <td><button class="remove-btn" onclick="removeFromCart(${
                 item.ID
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.removeFromCart = removeFromCart;
 
       $("#go-back-btn").click(function () {
-        // localStorage.setItem("cartBooks", JSON.stringify(cart));
+        localStorage.setItem("cartBooks", JSON.stringify(cart));
         window.location.href = "book-browse.html";
       });
     })

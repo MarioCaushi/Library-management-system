@@ -1,8 +1,7 @@
 books = JSON.parse(localStorage.getItem("book"));
 clients = JSON.parse(localStorage.getItem("client"));
 user = JSON.parse(localStorage.getItem("user"));
-// const cartBooks = JSON.parse(localStorage.getItem("cartBooks")) || [];
-const cartBooks = [];
+const cartBooks = JSON.parse(localStorage.getItem("cartBooks")) || [];
 const renderAllBooks = () => {
   let pageContainer = document.getElementById("books-container");
   pageContainer.innerHTML = "";
@@ -278,6 +277,9 @@ const renderbookInfo = (bookID) => {
 };
 
 const addBookToCart = (bookID) => {
+  if (cartBooks.find((book) => book.ID === bookID)) {
+    return;
+  }
   cartBooks.push(books[bookID - 1]);
   console.log(cartBooks);
 
