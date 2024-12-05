@@ -77,8 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // Expose functions to the global scope
       window.updateQuantity = updateQuantity;
       window.removeFromCart = removeFromCart;
+
       $("#go-back-btn").click(function () {
-        localStorage.setItem("cartBooks", JSON.stringify(cart));
+        // localStorage.setItem("cartBooks", JSON.stringify(cart));
         window.location.href = "book-browse.html";
       });
     })

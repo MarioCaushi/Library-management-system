@@ -1,8 +1,8 @@
 books = JSON.parse(localStorage.getItem("book"));
 clients = JSON.parse(localStorage.getItem("client"));
 user = JSON.parse(localStorage.getItem("user"));
-const cartBooks = JSON.parse(localStorage.getItem("cartBooks")) || [];
-
+// const cartBooks = JSON.parse(localStorage.getItem("cartBooks")) || [];
+const cartBooks = [];
 const renderAllBooks = () => {
   let pageContainer = document.getElementById("books-container");
   pageContainer.innerHTML = "";
