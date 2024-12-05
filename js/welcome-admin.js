@@ -25,6 +25,7 @@ function dataValidation() {
 }
 
 function showManagerInfo() {
+
   const container = document.getElementById("welcomeAdmin-container");
   container.innerHTML = "";
 
@@ -46,6 +47,24 @@ function showManagerInfo() {
       </div>
     `;
 
+  
+    const logoutButton = document.getElementById("logout-button");
+    logoutButton.addEventListener("click", logoutAction);
+  }
+  
+  function updateStats() {
+    const books = JSON.parse(localStorage.getItem("book")) || [];
+    const clients = JSON.parse(localStorage.getItem("client")) || [];
+
+    const totalBooks = books.length;
+    const totalClients = clients.length;
+  
+    
+    document.getElementById("bookCount").textContent = totalBooks;
+    document.getElementById("clientCount").textContent = totalClients;
+  }
+
+
   const logoutButton = document.getElementById("logout-button");
   logoutButton.addEventListener("click", logoutAction);
 }
@@ -65,7 +84,9 @@ function navigateTo(page) {
   window.location.href = page;
 }
 
+
 export { navigateTo };
+
 
 function initializeWelcomePage() {
   dataValidation();

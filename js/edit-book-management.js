@@ -116,6 +116,8 @@ function saveEditBook(editBook) {
 
         localStorage.setItem("book", JSON.stringify(books));
 
+        window.location.reload(); 
+
         alert("Changes saved successfully!");
     }
 }

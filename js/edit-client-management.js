@@ -312,26 +312,24 @@ function saveEditClient(editClient) {
             editClient["Password"] = $("#client-password-input").val();
         }
 
+        alert("Changes saved successfully!");
+
+        localStorage.setItem("selectedClient", JSON.stringify(editClient));
+
+        let clients = JSON.parse(localStorage.getItem("client"));
+    
+        clients = clients.map((client) => {
+            if (client["ID"] === editClient["ID"]) {
+                return { ...editClient };
+            }
+            return client;
+        });
+    
+        localStorage.setItem("client", JSON.stringify(clients));
+    
+        window.location.reload();
     }
-
-    localStorage.setItem("selectedClient", JSON.stringify(editClient));
-
-    let clients = JSON.parse(localStorage.getItem("client"));
-
-    clients = clients.map((client) => {
-        if (client["ID"] === editClient["ID"]) {
-            return { ...editClient };
-        }
-        return client;
-    });
-
-    localStorage.setItem("client", JSON.stringify(clients));
-
-    window.location.reload();
-
-    alert("Changes saved successfully!");
 }
-
 
 document.addEventListener("DOMContentLoaded", () => {
     // Safely add event listener to logout button

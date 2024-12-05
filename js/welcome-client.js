@@ -25,6 +25,7 @@ function dataValidation() {
 }
 
 function showClientInfo() {
+
   const container = document.getElementById("welcomeClient-container");
   container.innerHTML = "";
 
