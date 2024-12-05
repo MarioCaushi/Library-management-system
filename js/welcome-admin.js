@@ -52,23 +52,6 @@ function showManagerInfo() {
     logoutButton.addEventListener("click", logoutAction);
   }
   
-  function updateStats() {
-    const books = JSON.parse(localStorage.getItem("book")) || [];
-    const clients = JSON.parse(localStorage.getItem("client")) || [];
-
-    const totalBooks = books.length;
-    const totalClients = clients.length;
-  
-    
-    document.getElementById("bookCount").textContent = totalBooks;
-    document.getElementById("clientCount").textContent = totalClients;
-  }
-
-
-  const logoutButton = document.getElementById("logout-button");
-  logoutButton.addEventListener("click", logoutAction);
-}
-
 function updateStats() {
   const books = JSON.parse(localStorage.getItem("book")) || [];
   const clients = JSON.parse(localStorage.getItem("client")) || [];
@@ -86,7 +69,6 @@ function navigateTo(page) {
 
 
 export { navigateTo };
-
 
 function initializeWelcomePage() {
   dataValidation();
