@@ -71,16 +71,53 @@ document.addEventListener("DOMContentLoaded", () => {
         ).innerText = `Total: $${totalPrice.toFixed(2)}`;
       }
 
-      // Example of adding books from the cart
       cart.forEach((item) => addToCart(item.ID));
 
-      // Expose functions to the global scope
       window.updateQuantity = updateQuantity;
       window.removeFromCart = removeFromCart;
 
       $("#go-back-btn").click(function () {
         localStorage.setItem("cartBooks", JSON.stringify(cart));
         window.location.href = "book-browse.html";
+      });
+
+      $("#purchase-btn").click(function () {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        doc.text("Bookstore Receipt", 105, 20, { align: "center" });
+
+        doc.setFontSize(12);
+        doc.text("Title", 20, 40);
+        doc.text("Author", 80, 40);
+        doc.text("Quantity", 140, 40);
+        doc.text("Price", 180, 40);
+
+        let y = 50;
+        let totalAmount = 0;
+
+        cart.forEach((book) => {
+          const { Title, Author, Price, quantity } = book;
+          const bookTotal = Price * quantity;
+          totalAmount += bookTotal;
+
+          doc.text(Title, 20, y);
+          doc.text(Author, 80, y);
+          doc.text(String(quantity), 140, y, { align: "right" });
+          doc.text(`$${bookTotal.toFixed(2)}`, 180, y, { align: "right" });
+          y += 10;
+        });
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Total: $${totalAmount.toFixed(2)}`, 180, y + 10, {
+          align: "right",
+        });
+
+        const pdfBlob = doc.output("blob");
+        const pdfURL = URL.createObjectURL(pdfBlob);
+        window.open(pdfURL, "_blank");
       });
     })
     .catch((error) => console.error("Error fetching books:", error));
