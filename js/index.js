@@ -38,7 +38,7 @@ function evaluateLogin() {
         }
         //If manager credentials added successfull then you need to redirct to your own page
         console.log("Manager logged in successfully!");
-        window.location.href = "manager-welcome.html";
+        window.location.href = "welcome-admin.html";
     } else {
         let client=JSON.parse(localStorage.getItem("client"));
         const user = client.find(user => user.Username === username);
@@ -51,7 +51,7 @@ function evaluateLogin() {
             //If user credentials added successfull then you need to redirct to your own page
             console.log("User logged in successfully!");
             localStorage.setItem("user", JSON.stringify(user));
-            window.location.href = "client-welcome.html";
+            window.location.href = "welcome-client.html";
         } else {
             document.getElementById("login-evaluation").innerHTML = "<p class='text-danger small'>User does not exist!</p>";
         }
