@@ -4,7 +4,7 @@ body {
 
 #book-header {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   font-family: "Times New Roman", Times, serif;
 }
@@ -140,6 +140,10 @@ body {
   gap: 8px;
   transition: background-color 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  -webkit-transition: background-color 0.3s ease, transform 0.2s ease;
+  -moz-transition: background-color 0.3s ease, transform 0.2s ease;
+  -ms-transition: background-color 0.3s ease, transform 0.2s ease;
+  -o-transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 #like-btn:hover,
@@ -188,28 +192,8 @@ body {
   margin: 0;
 }
 
-.cart-button {
-  background-color: #ff6347;
-  border: none;
-  padding: 15px;
-  color: white;
-  cursor: pointer;
-  font-size: 18px;
-  border-radius: 5px;
-  margin-right: 5px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
 .navbar .cart-button i {
   margin-right: 8px;
-}
-
-.cart-button:hover {
-  transform: scale(1.02);
-  -webkit-transform: scale(1.02);
-  -moz-transform: scale(1.02);
-  -ms-transform: scale(1.02);
-  -o-transform: scale(1.02);
 }
 
 @keyframes pulse {
@@ -230,8 +214,11 @@ body {
   animation: pulse 1.5s infinite;
 }
 
-.logout-button {
-  background-color: #f44336; /* Red background for Logout */
+.logout-button,
+.home-button,
+.cart-button {
+  background-color: #f44336;
+  /*RedbackgroundforLogout*/
   color: white;
   padding: 10px 20px;
   border: none;
@@ -243,17 +230,30 @@ body {
   align-items: center;
   transition: background-color 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
 }
 
 .logout-button i {
   margin-right: 8px;
 }
+.home-button i {
+  margin-right: 8px;
+}
 
-.logout-button:hover {
+.logout-button:hover,
+.home-button:hover,
+.cart-button:hover {
   background-color: #d32f2f;
   transform: scale(1.02);
   -webkit-transform: scale(1.02);
   -moz-transform: scale(1.02);
   -ms-transform: scale(1.02);
   -o-transform: scale(1.02);
+}
+
+#logout-container {
+  display: flex;
 }

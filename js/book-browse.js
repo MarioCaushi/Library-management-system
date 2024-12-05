@@ -329,6 +329,10 @@ $("#logout-button").click(function () {
   window.location.href = "index.html";
 });
 
+$("#home-button").click(function () {
+  window.location.href = "welcome-client.html";
+});
+
 const navbar = document.getElementsByClassName("navbar")[0];
 const sticky = navbar.offsetTop;
 
