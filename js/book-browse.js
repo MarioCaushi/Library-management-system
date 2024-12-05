@@ -1,8 +1,8 @@
 books = JSON.parse(localStorage.getItem("book"));
 clients = JSON.parse(localStorage.getItem("client"));
 user = JSON.parse(localStorage.getItem("user"));
-cartBooks = [];
-
+// const cartBooks = JSON.parse(localStorage.getItem("cartBooks")) || [];
+const cartBooks = [];
 const renderAllBooks = () => {
   let pageContainer = document.getElementById("books-container");
   pageContainer.innerHTML = "";
@@ -321,7 +321,7 @@ const checkUserLikes = (bookID) => {
 
 $("#go-cart-button").click(function (e) {
   localStorage.setItem("cartBooks", JSON.stringify(cartBooks));
-  window.location.href = "krist.html";
+  window.location.href = "cart.html";
 });
 
 $("#logout-button").click(function () {
