@@ -12,9 +12,9 @@ const renderAllBooks = () => {
 
   books.forEach((book) => {
     booksTemplate += `<li class="book-container" id="${book.ID}" >
-    <img id="cover-img" src="${book["Cover Image URL"]}"/>
+    <img id="cover-img" src="${book["Cover Image URL"]}" onclick="renderbookInfo(${book.ID})" />
     <div id="book-details">
-        <h2 id="book-title" onclick="renderbookInfo(${book.ID})">${book.Title}</h2>
+        <h2 id="book-title" >${book.Title}</h2>
         <span id="book-author">Author: ${book.Author}</span>
         <span id="book-year">Published Year: ${book["Published Year"]}</span>
         <span id="book-rating">Rating: ${book.Rating} / 5</span>
@@ -34,26 +34,15 @@ const renderAllBooks = () => {
   document.getElementById("book-grid").innerHTML += booksTemplate;
 };
 
-/*
-'<li class="book-container">
-  <img id="cover-img" src="' + book["Cover Image URL"] + '"/>
-  <div class="book-details">
-    <h2 id="book-title">' + book.Title + '</h2>
-    <span id="book-author">Author: ' + book.Author + '</span>
-    <span id="book-year">Published Year: ' + book["Published Year"] + '</span>
-    <span id="book-rating">Rating: ' + book.Rating + '</span>
-    <span id="book-price">$' + book.Price + ' USD</span>
-	<button id='like-btn'><i class='fas fa-heart'></i>Like<span class='like-count'>123</span></button><br><button id='cart-btn'><i class='fas fa-shopping-cart'></i>Add to Cart</button></li>";
-  </div>
-  </li>'
-*/
-
 const renderbookInfo = (bookID) => {
   specificBook = books[bookID - 1];
   let bookInfo = document.getElementById("books-container");
   let bookStyling = document.getElementsByTagName("head")[0];
-  bookInfo.innerHTML =
-    "<input type='button' value='Go Back' onclick='renderAllBooks()' />";
+  bookInfo.innerHTML = `
+    <button class="go-back" onclick='renderAllBooks()'>
+      <i class="fas fa-arrow-left"></i> Go Back
+    </button>
+    `;
   let bookInfoTemplate = `
     <div id="specific-book-container">
       <div id="specific-book-details">
@@ -69,6 +58,15 @@ const renderbookInfo = (bookID) => {
           <div>
             <span id="specific-price"><strong>Price: </strong>${specificBook.Price}$</span>
             <span id="specific-rating"><strong>Rating: </strong>${specificBook.Rating} / 5</span>
+          </div>
+          <div>
+            <button id="like-btn">
+            <i class="fas fa-heart"></i>Like
+            <span class="like-count">${specificBook["Likes-clients"].length}</span>
+            </button>
+            <button id="cart-btn" onclick="addBookToCart(${bookID})">
+            <i class="fas fa-shopping-cart"></i>Add to Cart
+            </button>
           </div>
         </div>
       </div>
@@ -214,6 +212,34 @@ const renderbookInfo = (bookID) => {
         width: 100%;
       }
     }
+      .go-back {
+  background-color: #ff6347;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-right: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.go-back i {
+  margin-right: 8px; 
+}
+
+/* Hover effect */
+.go-back:hover {
+  background-color: #ff6347; 
+  transform: scale(1.3);
+  -webkit-transform: scale(1.02);
+  -moz-transform: scale(1.02);
+  -ms-transform: scale(1.02);
+  -o-transform: scale(1.02);
+}
   </style>
   `;
   bookStyling.innerHTML += bookStylingTemplate;
@@ -230,39 +256,9 @@ const addBookToCart = (bookId) => {
   }, 3000);
 };
 
-/*
-<div class="book-container">
-  <div class="cover-image">
-    <img>
-  </div>
-  <div class="book-info">
-    <h2>Title</h2>
-    <p><strong>Author:</strong>Author/p>
-    <p><strong>Genre:</strong> Classic</p>
-    <p><strong>Published Year:</strong> 1925</p>
-    <p><strong>Description:</strong> Set in the Roaring Twenties, 'The Great Gatsby' tells the story of the enigmatic Jay Gatsby and his obsession with the beautiful Daisy Buchanan. It captures the decadence and excess of the era while exploring themes of love, wealth, and the American Dream.</p>
-    <div class="price-rating">
-      <span><strong>Price:</strong> $10.99</span>
-      <span><strong>Rating:</strong> 4.5 / 5</span>
-    </div>
-    <div class="reviews">
-      <h3>Reviews:</h3>
-      <div class="review-item">
-        <p>"A beautifully written tale that captures the essence of a lost era. Gatsby's tragic love story is haunting."</p>
-      </div>
-      <div class="review-item">
-        <p>"A classic that never gets old. Fitzgerald's prose is stunning, and the themes are still relevant today."</p>
-      </div>
-    </div>
-  </div>
-</div>
-*/
 const navbar = document.getElementsByClassName("navbar")[0];
-
-// Get the offset position of the navbar
 const sticky = navbar.offsetTop;
 
-// Function to add 'sticky' class when scrolling
 function stickyNavbar() {
   if (window.scrollY > sticky) {
     navbar.classList.add("fixed");
@@ -270,10 +266,12 @@ function stickyNavbar() {
     navbar.classList.remove("fixed");
   }
 }
-
-// Attach the function to the scroll event
 window.onscroll = function () {
   stickyNavbar();
 };
 
+$("#go-cart-button").click(function (e) {
+  localStorage.setItem("cartBooks", JSON.stringify(cartBooks));
+  window.location.href = "krist.html";
+});
 renderAllBooks();

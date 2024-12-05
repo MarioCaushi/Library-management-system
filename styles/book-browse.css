@@ -163,7 +163,7 @@ body {
 
 .navbar {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: #333;
   padding: 15px;
@@ -172,6 +172,19 @@ body {
   top: 0;
   width: 100%;
   z-index: 1000;
+}
+.navbar.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+.navbar > h2 {
+  flex: 1;
+  text-align: center;
+  font-size: 35;
+  margin: 0;
 }
 
 .cart-button {
@@ -183,6 +196,8 @@ body {
   font-size: 18px;
   border-radius: 5px;
   margin-right: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .navbar .cart-button i {
   margin-right: 8px;
@@ -212,12 +227,4 @@ body {
 }
 .pulsating {
   animation: pulse 1.5s infinite;
-}
-
-.navbar.fixed {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000; /* Ensure it stays above other content */
 }
