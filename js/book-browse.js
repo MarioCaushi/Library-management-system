@@ -257,5 +257,23 @@ const addBookToCart = (bookId) => {
   </div>
 </div>
 */
+const navbar = document.getElementsByClassName("navbar")[0];
+
+// Get the offset position of the navbar
+const sticky = navbar.offsetTop;
+
+// Function to add 'sticky' class when scrolling
+function stickyNavbar() {
+  if (window.scrollY > sticky) {
+    navbar.classList.add("fixed");
+  } else {
+    navbar.classList.remove("fixed");
+  }
+}
+
+// Attach the function to the scroll event
+window.onscroll = function () {
+  stickyNavbar();
+};
 
 renderAllBooks();

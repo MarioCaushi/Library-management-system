@@ -162,12 +162,16 @@ body {
 }
 
 .navbar {
-  display: flexbox;
+  display: flex;
   justify-content: center;
   align-items: center;
   background-color: #333;
   padding: 15px;
   color: white;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 .cart-button {
@@ -206,7 +210,14 @@ body {
     opacity: 1;
   }
 }
-
 .pulsating {
   animation: pulse 1.5s infinite;
+}
+
+.navbar.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Ensure it stays above other content */
 }
