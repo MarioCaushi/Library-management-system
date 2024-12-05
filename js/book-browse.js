@@ -60,9 +60,9 @@ const renderbookInfo = (bookID) => {
             <span id="specific-rating"><strong>Rating: </strong>${specificBook.Rating} / 5</span>
           </div>
           <div>
-            <button id="like-btn">
+            <button id="like-btn" onclick="checkUserLikes(${bookID})>
             <i class="fas fa-heart"></i>Like
-            <span class="like-count">${specificBook["Likes-clients"].length}</span>
+            <span class="like-count" id="like-count${bookID}">${specificBook["Likes-clients"].length}</span>
             </button>
             <button id="cart-btn" onclick="addBookToCart(${bookID})">
             <i class="fas fa-shopping-cart"></i>Add to Cart
