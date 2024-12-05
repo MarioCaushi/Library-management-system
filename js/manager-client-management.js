@@ -32,16 +32,18 @@ console.log(clients);
 
 // Function to display clients in the container
 function showClients(clients) {
-    const container = document.getElementById("client-container");
+    const container = document.getElementById("client-management-container");
+
     container.innerHTML = ""; // Clear any existing content
 
     clients.forEach(client => {
         const card = document.createElement("div");
-        card.className = "client-card border rounded shadow-sm m-2 p-3";
-        card.style.flex = "1 1 calc(30% - 20px)";
-        card.style.display = "flex";
-        card.style.flexDirection = "column";
-        card.style.alignItems = "center";
+        card.className = "card mx-auto border border-dark border-opacity-50 rounded-3 shadow-md m-4 p-2";
+        card.style.width = "400px"
+        // card.style.flex = "1 1 calc(30% - 20px)";
+        // card.style.display = "flex";
+        // card.style.flexDirection = "column";
+        // card.style.alignItems = "center";
 
         let name = client["Name"];
         let lastname = client["LastName"];
@@ -53,6 +55,7 @@ function showClients(clients) {
         
 
         card.innerHTML = `
+    <div class="d-flex flex-column align-items-center p-3">
         <img src="${profileIconURL}" alt="Profile Icon" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 10px;">
         <div class="text-center">
             <p class="client-name m-0"><strong>${name} ${lastname}</strong></p>
@@ -63,11 +66,13 @@ function showClients(clients) {
             <p class="m-0">Books Purchased: ${purchasedBooksCount}</p>
         </div>
         <div class="client-actions mt-2">
-            <button type="button" class="btn btn-info btn-sm m-1" id="view-${id}">View Details</button>
-            <button type="button" class="btn btn-warning btn-sm m-1" id="edit-${id}">Edit</button>
-            <button type="button" class="btn btn-danger btn-sm m-1" id="delete-${id}">Delete</button>
+            <button type="button" class="btn btn-info btn-sm m-1 rounded-2" id="view-${id}">View Details</button>
+            <button type="button" class="btn btn-warning btn-sm m-1 rounded-2" id="edit-${id}">Edit</button>
+            <button type="button" class="btn btn-danger btn-sm m-1 rounded-2" id="delete-${id}">Delete</button>
         </div>
-    `;
+    </div>
+`;
+
 
         container.appendChild(card);
 
@@ -117,26 +122,54 @@ function selectClient(id, action,clients) {
 
 // Function to search for clients by name or username
 function searchClient() {
-    const searchValue = document.getElementById("search-client-input").value.trim().toLowerCase();
+    const searchValue = $("#search-client-input").val().toLowerCase();
 
     const searchResults = clients.filter(client => {
         const name = client["Name"].toLowerCase();
         const username = client["Username"].toLowerCase();
+        const lastname = client["LastName"].toLowerCase();
 
-        return name.includes(searchValue) || username.includes(searchValue);
+        return name.includes(searchValue) || lastname.includes(searchValue) ||
+        username.includes(searchValue);
     });
 
-    
-    showClients(searchResults);
+    if (!searchValue) {
+        showClients(clients);
+    } else {
+        showClients(searchResults);
+    }
 }
 
+
+// DOM Content Loaded
+document.addEventListener("DOMContentLoaded", function() {
+    try {
+        document.getElementById("logout-button").addEventListener("click", logoutAction);
+        dataValidation();
+        showClients(clients);
+
+        // Ensure input event is working
+        const searchInput = document.getElementById("search-client-input");
+        if (searchInput) {
+            searchInput.addEventListener("input", searchClient);
+        } else {
+            console.error("Search input field not found");
+        }
+    } catch (error) {
+        console.error("An error occurred:", error);
+    }
+});
 
 
 // Function to handle delete client action
 function deleteClient(id, clients) {
-    const updatedClients = clients.filter(client => client.ID !== id);
-    localStorage.setItem("client", JSON.stringify(updatedClients));
-    showClients(updatedClients); // Re-render clients
+    const agree = confirm("Are you sure?");
+
+    if(agree) {
+        const updatedClients = clients.filter(client => client.ID !== id);
+        localStorage.setItem("client", JSON.stringify(updatedClients));
+        showClients(updatedClients); 
+    } 
 }
 
 
@@ -147,9 +180,8 @@ document.addEventListener("DOMContentLoaded", function() {
         dataValidation();
         showClients(clients);
         
-        document.getElementById("search-client-input").addEventListener("input", function() {
-            searchClient(books);
-        });
+        document.getElementById("search-client-input").addEventListener("input", searchClient);
+
     } catch (error) {
         console.error("An error occurred:", error);
 

@@ -1,9 +1,10 @@
-import { logoutAction } from "./manager-client-management.js";
+import { logoutAction, selectClient } from "./manager-client-management.js";
 
 function showClientInfo() {
-    // Get client ID from local storage
+    // Get client, books, clients from local storage
     const clientInfo = JSON.parse(localStorage.getItem("selectedClient"));
     const books = JSON.parse(localStorage.getItem("book"));
+    const clients = JSON.parse(localStorage.getItem("client"));
 
     if (!clientInfo) {
         console.error("No client Info found from manager-client-management.");
@@ -18,6 +19,13 @@ function showClientInfo() {
     document.title = `Client Info - ${clientInfo["Name"]}!`;
 
     showClientData(clientInfo);
+
+    $("#delete-btn").click(deleteClient);
+
+    $("#edit-btn").on("click", () => {
+        selectClient(clientInfo["ID"],"edit",clients );
+    });
+
 
     document.getElementById("purchased-tab").addEventListener("click", () => {
         showTabContent(clientInfo, books, "purchased");
@@ -115,7 +123,6 @@ function showTabContent(clientInfo, books, action) {
 function showBookPurchased(booksPurchased, books) {
     const bookCardsContainer = document.getElementById("book-cards");
 
-    // Clear the container first
     bookCardsContainer.innerHTML = "";
 
     if (booksPurchased.length === 0) {
@@ -150,10 +157,9 @@ function showBookPurchased(booksPurchased, books) {
                 </div>
             `;
 
-            // Append the card to the container
+            // Append the card to cardDic
             bookCardsContainer.appendChild(cardDiv);
 
-            // Attach the event listener to the button
             const detailsButton = cardDiv.querySelector(`#details-purchased-${id}`);
             detailsButton.addEventListener("click", () => {
                 showBookDetailsTab(book);
@@ -163,10 +169,19 @@ function showBookPurchased(booksPurchased, books) {
 }
 
 function showBookDetailsTab (book) {
-
     localStorage.setItem("selectedBook",JSON.stringify(book));
-
     window.open("info-book-manager.html", "_blank");
+}
+
+
+function deleteClient(id, clients) {
+    const agree = confirm("Are you sure?");
+
+    if(agree) {
+        const updatedClients = clients.filter(client => client.ID !== id);
+        localStorage.setItem("client", JSON.stringify(updatedClients));
+        showClients(updatedClients); 
+    } 
 }
 
 function showClientData(clientInfo){
@@ -195,3 +210,5 @@ document.addEventListener("DOMContentLoaded", () => {
     showClientInfo();
 
 });
+
+export { showBookPurchased };

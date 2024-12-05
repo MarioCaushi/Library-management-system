@@ -42,7 +42,7 @@ body {
 }
 
 .search-container input:focus{
-  width: 450px;
+  width: 400px;
 }
 
 .search-container i{

@@ -10,8 +10,7 @@
     <title>Client-Management</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary border border-dark border-opacity-50 rounded-3 shadow-sm m-2">
-
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border border-dark border-opacity-50 rounded-3 shadow-sm m-2 position-sticky top-0 z-1">
         <div class="container-fluid">
 
             <div class="me-auto">
@@ -79,17 +78,17 @@
 
     <div class="row align-items-center mb-4">
         <!-- Centered Search Bar -->
-        <div class="col-12 text-center">
-            <div class="search-container d-inline-flex align-items-center">
-                <input type="text" id="search-client-input" class="form-control searchbar" placeholder="Search by Name or Username">
-                <i class="fa fa-search ms-2"></i>
+        <div class="col-12 text-center mt-3">
+            <div class="search-container d-inline-flex align-items-center m-3">
+                <input type="text" id="search-client-input" class="form-control searchbar me-3" placeholder="Search by Name or Username">
+                <i class="fa fa-search ms-2 me-3"></i>
             </div>
-            <a href="register.html" class="addclient">Add Client</a>
+            <a href="register.html" class="addclient rounded-4 px-4">Add Client</a>
         </div>
     </div>
     
         <!-- Client Cards -->
-        <div id="client-container" class="d-flex flex-wrap justify-content-start">
+        <div id="client-management-container" class="row container-fluid p-2">
             <!-- Client cards will be dynamically added here -->
         </div>
 
@@ -99,6 +98,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous">
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
     </script>
     <script type="module" src="./js/manager-client-management.js"></script>
 </body>
