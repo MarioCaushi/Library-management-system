@@ -333,11 +333,11 @@ function saveEditClient(editClient) {
 
 document.addEventListener("DOMContentLoaded", () => {
     // Safely add event listener to logout button
-    const logoutButton = document.getElementById("logout-button");
+    const logoutButton = document.getElementById("logout - button");
     if (logoutButton) {
         logoutButton.addEventListener("click", logoutAction);
     } else {
-        console.warn("Logout button not found.");
+        console.warn("Logout button not found. ");
     }
 
     // Display client info
