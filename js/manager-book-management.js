@@ -1,5 +1,3 @@
-import {fetchData} from "./index.js"; 
-
 //A function for the log out button to work
 function logoutAction(){
     const decision =  confirm("Are you sure?");

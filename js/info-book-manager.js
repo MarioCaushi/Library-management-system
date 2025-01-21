@@ -1,6 +1,6 @@
 import { logoutAction, selectBook } from "./manager-book-management.js";
 
-//Funtion to show the info of a specific book when the info button is clicked ==> The MAIN function of this file
+//Function to show the info of a specific book when the info button is clicked ==> The MAIN function of this file
 function showBookInfo()
 {
     const bookInfo = JSON.parse(localStorage.getItem("selectedBook"));
