@@ -1,63 +1,60 @@
-import {fetchData} from "./index.js"; 
-
 //A function for the log out button to work
-function logoutAction(){
-    const decision =  confirm("Are you sure?");
-    
+function logoutAction() {
+    const decision = confirm("Are you sure?");
+
     console.log(decision);
 
-    if(decision)
-        {
-            console.log("Manager logged out");
-            window.location.href="index.html";
-        }
+    if (decision) {
+        console.log("Manager logged out");
+        window.location.href = "index.html";
+    }
 };
 
-//Function to check if the localStorage is valid and if not then fetching the data from the Data.json file again 
-//using the imported function 
-function dataValidation(){
+//Function to get the book cards from the database
+async function fetchBookCards() {
+    const url = 'http://localhost:5223/Book/get-book-cards';
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
 
-    if(localStorage.length===0)
-        {
-            fetchData();
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        else {
-            let manager = JSON.parse(localStorage.getItem("manager"));
-            let client = JSON.parse(localStorage.getItem("client"));
-            let book = JSON.parse(localStorage.getItem("book"));
 
-            console.log("Data Validation: ",manager);
-            console.log("Data Validation",client);
-            console.log("Data Validation", book);
-
-            if(!manager || !book || !client)
-                {
-                    fetchData();
-                }
-        }
-};
-
-//Getting the list of books from local storage
-const books=JSON.parse(localStorage.getItem("book"));
+        return await response.json();
+    } catch (error) {
+        console.error('Failed to fetch book cards:', error);
+        return [];
+    }
+}
 
 //Function to show the list of books
-function showBooks(books) {
+async function showBooks(books) {
 
     const container = document.getElementById("viewBooks-management-container");
     container.innerHTML = "";
 
+
+    if (!books || books.length === 0) {
+        container.innerHTML = "<p>No books available or failed to load books.</p>";
+        return;
+    }
+
     books.forEach(book => {
-        
         const card = document.createElement("div");
         card.className = "card mx-auto border border-dark border-opacity-50 rounded-3 shadow-md m-5 p-1";
         card.style.width = "300px";
 
-        let imageURL = book["Cover Image URL"];
-        let title = book["Title"];
-        let author = book["Author"];
-        let genre = book["Genre"];
-        let price = book["Price"];
-        let bookID = book["ID"];
+        let imageURL = book.coverImageUrl;
+        let title = book.title;
+        let author = book.author;
+        let genre = book.genre;
+        let price = book.price;
+        let bookID = book.idBook;
 
         card.innerHTML = `
             <img src="${imageURL}" class="card-img-top" alt="Book Cover Image" style="height: 450px">
@@ -79,28 +76,28 @@ function showBooks(books) {
 
         container.appendChild(card);
 
-        // Attach event listener for delete button
+        // Attach event listeners to each button
         const deleteButton = card.querySelector(`#delete-${bookID}`);
         deleteButton.addEventListener("click", function () {
-            deleteBook(bookID, books);
+            deleteBook(bookID);
         });
 
         const infoButton = card.querySelector(`#info-${bookID}`);
         infoButton.addEventListener("click", function () {
-            selectBook(bookID,"info");
+            selectBook(bookID, "info");
         });
 
         const editButton = card.querySelector(`#edit-${bookID}`);
         editButton.addEventListener("click", function () {
-            selectBook(bookID,"edit");
+            selectBook(bookID, "edit");
         });
-
     });
-};
+}
+
 
 // Function for searching 
 function search(books) {
-    
+
     const searchValue = document.getElementById("search-book-management").value;
     console.log("Search Value:", searchValue); // For debugging
 
@@ -135,68 +132,83 @@ function searchHelper(books, word) {
 
             }
         });
-        
+
         return searchBooks;
     }
-;}
+    ;
+}
 
-//Funtion to delete a book
-function deleteBook(id, books) {
+//Function to get the book cards from the database
+async function deleteBookAPI(id) {
+    const url = `http://localhost:5223/Book/delete-book/${id}`;
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            return false
+        }
+        return true
+
+    } catch (error) {
+        console.error('Failed to fetch book cards:', error);
+        return;
+}
+};
+
+//Function to delete a book
+async function deleteBook(id) {
 
     console.log("ID selected to delete book: ", id);
-    console.log("Print all the books for debugging purposes:", books);
 
     const agree = confirm("Are you sure?");
 
-    if(agree) {
-        const updatedBooks = books.filter(book => book.ID !== id);
+    if (agree) {
 
-        console.log("Print the updated list of books to see if there are any changes made",updatedBooks);
-    
-        localStorage.setItem("book",JSON.stringify(updatedBooks));
-    
-        showBooks(updatedBooks);
+        const deleted = deleteBookAPI(id)
+
+        if(deleted)
+        {
+            location.reload();
+            showBooks(updatedBooks);
+        }
+        else
+        {
+            alert("Book not deleted");
+        }
     }
 };
 
 //Function to give functionality to edit and info book 
-function selectBook(id,keyword) {
+function selectBook(id, keyword) {
 
-    const books = JSON.parse(localStorage.getItem("book"));
-    if (!books) {
-        console.error("No book data found in localStorage.");
-        return;
-    }
+    localStorage.setItem("selectedBook", JSON.stringify(id));
 
-    const bookInfo = books.find(book => book["ID"] == id);
-    if (!bookInfo) {
-        console.error("No matching book found for the given ID.");
-        return;
-    }
-
-    localStorage.setItem("selectedBook", JSON.stringify(bookInfo));
-
-    if(keyword =="info"){
+    if (keyword == "info") {
         window.open("info-book-manager.html", "_blank");
     }
-    
-    if(keyword =="edit"){
+
+    if (keyword == "edit") {
         window.open("edit-book-management.html", "_blank");
     }
 };
 
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function () {
     try {
+
+        //Getting the books
+        const books = await fetchBookCards();
+
         document.getElementById("logout-button").addEventListener("click", logoutAction);
-        dataValidation();
         showBooks(books);
-        
-        document.getElementById("search-book-management").addEventListener("input", function() {
+
+        document.getElementById("search-book-management").addEventListener("input", function () {
             search(books);
         });
-        
-        document.getElementById("clear-book-management-button").addEventListener("click", function() {
+
+        document.getElementById("clear-book-management-button").addEventListener("click", function () {
             document.getElementById("search-book-management").value = "";
             showBooks(books);
         });
@@ -207,4 +219,4 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-export {logoutAction, selectBook };
+export { logoutAction, selectBook };
