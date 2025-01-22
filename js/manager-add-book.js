@@ -1,8 +1,53 @@
 import { logoutAction } from "./manager-book-management.js";
-import { fetchData } from "./index.js";
+
+//Function to check if book exists
+async function bookExist(title)
+{
+    const url = `http://localhost:5223/Book/check-book/${title}`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+
+        if (!response.ok) {
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error('Failed to fetch book cards:', error);
+        return;
+    }
+}
+
+
+//Function to add a new book
+async function addBook(book)
+{
+    const url = `http://localhost:5223/Book/add-book`;
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(book)
+        });
+
+        if (!response.ok) {
+            return false;
+        }
+        return true;
+    } catch (error) {
+        console.error('Failed to fetch book cards:', error);
+        return;
+    }
+}
 
 //Function to evaluate the add-book form
-function bookFormEvaluation(event)
+async function bookFormEvaluation(event)
 {
     event.preventDefault();
 
@@ -25,15 +70,9 @@ function bookFormEvaluation(event)
     console.log("URL: ",url);
     console.log("Description: ",description);
     
-    if(localStorage.length==0)
-        {
-            fetchData();
-        }
 
-    const books = JSON.parse(localStorage.getItem("book"));
-    console.log("Books from local-storage: ",books);
 
-    let book = books.find(book => book.Title.toLowerCase().trim() == title.toLowerCase().trim());
+    let book = await bookExist(title);
     console.log("If title is unique", book);
 
     if(book) {
@@ -62,28 +101,32 @@ function bookFormEvaluation(event)
         document.getElementById("description-input-book").value="";
 
         const newBook = {
-            "ID": books.length > 0 ? (books[books.length - 1].ID + 1) : 1,
             "Title": title,
             "Author": author,
             "Genre": genre,
-            "Published Year": year,
+            "PublishedYear": year, 
             "Description": description,
             "Price": price,
-            "Cover Image URL": url,
             "Rating": rating,
-            "Reviews": [],
-            "Likes-clients": []
+            "CoverImageUrl": url, 
+            "IdManager": Number(JSON.parse(localStorage.getItem("manager"))),
+        };
+
+        const added = await addBook(newBook)
+
+        if(added){
+            console.log("New Book added: ", newBook);
+
+            setTimeout(() => {
+                alert("Book Added Successfully:)");
+            }, 200)
         }
-
-        console.log("New Book added: ", newBook);
-
-        const newBooks = [...books,newBook];
-
-        localStorage.setItem("book",JSON.stringify(newBooks));
-
-        setTimeout(() => {
-            alert("Book Added Successfully:)");
-        }, 200)
+        else
+        {
+            setTimeout(() => {
+                alert("Book Not Added ");
+            }, 200)
+        }
     }
 }
 
