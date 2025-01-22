@@ -94,49 +94,46 @@ async function showBooks(books) {
     });
 }
 
-
-// Function for searching 
-function search(books) {
-
-    const searchValue = document.getElementById("search-book-management").value;
-    console.log("Search Value:", searchValue); // For debugging
-
-    const searchBooks = searchHelper(books, searchValue);
-    console.log(searchBooks); //Debugging purposes
-    showBooks(searchBooks);
-};
-
-
-// Creating a helper function to find the books with a certain keyword
-function searchHelper(books, word) {
-
-    let searchBooks = [];
-
-    if (word === "") {
-
-        return books;
-
-    } else {
-
-        books.forEach(book => {
-
-            if (
-                book.Title.toLowerCase().includes(word.toLowerCase()) ||
-                book.Author.toLowerCase().includes(word.toLowerCase()) ||
-                book.Genre.toLowerCase().includes(word.toLowerCase()) ||
-                book.Price.toString().includes(word) ||
-                book.ID.toString() === word
-            ) {
-
-                searchBooks.push(book);
-
-            }
+//Function to get books searched from the database
+async function searchAPI(keyword)
+{
+    const url = `http://localhost:5223/Book/search-books/${keyword}`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
         });
 
-        return searchBooks;
+        if (!response.ok) {
+            return [];
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Failed to fetch book cards:', error);
+        return [];
     }
-    ;
 }
+
+
+// Function for searching 
+async function search() {
+
+    const searchValue = document.getElementById("search-book-management").value.trim().toLowerCase();
+    console.log("Search Value:", searchValue); // For debugging
+
+    if(searchValue == "")
+    {
+        return;
+    }
+    const searchBooks = await searchAPI(searchValue);
+
+    console.log(searchBooks); //Debugging purposes
+    showBooks(searchBooks);
+};0
+
 
 //Function to get the book cards from the database
 async function deleteBookAPI(id) {
@@ -166,7 +163,7 @@ async function deleteBook(id) {
 
     if (agree) {
 
-        const deleted = deleteBookAPI(id)
+        const deleted = await deleteBookAPI(id)
 
         if(deleted)
         {
@@ -205,7 +202,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         showBooks(books);
 
         document.getElementById("search-book-management").addEventListener("input", function () {
-            search(books);
+            search();
         });
 
         document.getElementById("clear-book-management-button").addEventListener("click", function () {
