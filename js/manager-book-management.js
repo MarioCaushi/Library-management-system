@@ -138,21 +138,45 @@ function searchHelper(books, word) {
     ;
 }
 
+//Function to get the book cards from the database
+async function deleteBookAPI(id) {
+    const url = `http://localhost:5223/Book/delete-book/${id}`;
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            return false
+        }
+        return true
+
+    } catch (error) {
+        console.error('Failed to fetch book cards:', error);
+        return;
+}
+};
+
 //Function to delete a book
-function deleteBook(id) {
+async function deleteBook(id) {
 
     console.log("ID selected to delete book: ", id);
 
     const agree = confirm("Are you sure?");
 
     if (agree) {
-        const updatedBooks = books.filter(book => book.ID !== id);
 
-        console.log("Print the updated list of books to see if there are any changes made", updatedBooks);
+        const deleted = deleteBookAPI(id)
 
-        localStorage.setItem("book", JSON.stringify(updatedBooks));
-
-        showBooks(updatedBooks);
+        if(deleted)
+        {
+            location.reload();
+            showBooks(updatedBooks);
+        }
+        else
+        {
+            alert("Book not deleted");
+        }
     }
 };
 

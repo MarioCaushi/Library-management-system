@@ -1,9 +1,7 @@
 import { logoutAction } from "./manager-book-management.js";
 
-//Function to check if book exists
-async function bookExist(title)
-{
-    const url = `http://localhost:5223/Book/check-book/${title}`;
+async function bookExist(title) {
+    const url = `http://localhost:5223/Book/check-book/${encodeURIComponent(title)}`;
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -12,13 +10,13 @@ async function bookExist(title)
             },
         });
 
-        if (!response.ok) {
-            return true;
+        if (response.ok) {
+            return true;  
         }
-        return false;
+        return false;  
     } catch (error) {
-        console.error('Failed to fetch book cards:', error);
-        return;
+        console.error('Failed to check if book exists:', error);
+        return;  
     }
 }
 
