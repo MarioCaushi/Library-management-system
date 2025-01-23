@@ -216,4 +216,4 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 
-export { logoutAction, selectBook };
+export { logoutAction, selectBook, deleteBookAPI };

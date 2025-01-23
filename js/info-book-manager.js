@@ -1,25 +1,50 @@
-import { logoutAction, selectBook } from "./manager-book-management.js";
+import { logoutAction, selectBook, deleteBookAPI } from "./manager-book-management.js";
+
+//Function to get BookInfo fromm the API
+async function getBookInfoAPI(id)
+{
+    const url = `http://localhost:5223/Book/get-book-info/${id}`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+
+        if (!response.ok) {
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Failed to fetch book cards:', error);
+        return null;
+    }
+}
 
 //Function to show the info of a specific book when the info button is clicked ==> The MAIN function of this file
-function showBookInfo()
+async function showBookInfo()
 {
-    const bookInfo = JSON.parse(localStorage.getItem("selectedBook"));
+    const bookInfoId = JSON.parse(localStorage.getItem("selectedBook"));
+
+    const bookInfo = await getBookInfoAPI(bookInfoId);
 
     if(!bookInfo) {
         console.log("No bookInfo element from info-book-management file");
         return;
     }
 
-    document.title = `Book Info - ${bookInfo["Title"]}!`;
+    document.title = `Book Info - ${bookInfo["title"]}!`;
 
     detailsBookInfo(bookInfo);
 
-    const clientLikes = bookInfo["Likes-clients"].length;
+    const clientLikes = bookInfo["noLikes"];
     console.log("Book-likes length: ", clientLikes);
 
     showBookLikes(clientLikes,bookInfo,"info");
 
-    const clientReviews =  bookInfo["Reviews"].length;
+    const clientReviews =  bookInfo["noReviews"];
     console.log("Book-reviews length: ", clientReviews);
 
     showBookReviews(clientReviews, bookInfo, "info");
@@ -37,21 +62,13 @@ function showBookReviews(clientReviews, bookInfo, keyword) {
     }
     else {
 
-        const clients = JSON.parse(localStorage.getItem("client"));
-        console.log("Clients: ", clients);
-        
-        if (!clients) {
-            console.log("Client list from local storage is empty or something is wrong");
-            return;
-        }
+        showReviews(bookInfo["bookReviews"], keyword);
 
-        showReviews(bookInfo["Reviews"],clients, keyword, bookInfo);
-
-          $("#search-book-reviews").on("input", () => searchBookReviews(bookInfo,clients, keyword));
+          $("#search-book-reviews").on("input", () => searchBookReviews(bookInfo["bookReviews"], keyword));
 
           $("#clear-book-reviews").on("click", () => {
                     $("#search-book-reviews").val("");
-                    showReviews(bookInfo["Reviews"],clients, keyword, bookInfo)});
+                    showReviews(bookInfo["bookReviews"], keyword)});
 
     }
 
@@ -59,42 +76,42 @@ function showBookReviews(clientReviews, bookInfo, keyword) {
 
 
 //function to show the reviews on a book
-function showReviews(reviews,clients, keyword, book) {
+function showReviews(reviews, keyword) {
 
     $("#book-reviews").empty();
 
-    reviews.forEach(review => {
+    console.log(reviews);
 
-        const clientInfo = clients.find(client => client["ID"]==review["clientID"]);
+    reviews.forEach(review => {
 
         $("#book-reviews").append(
             `<div class="col-12 mb-2 p-2">
                 <div class="card border-0 rounded-4 shadow-sm">
                     <div class="card-body d-flex flex-column p-4">
                         <div class="client-info mb-3">
-                            <h5 class="card-title text-dark">${clientInfo['Name']}</h5>
-                            <p class="card-text text-muted">Username: ${clientInfo['Username']}</p>
-                            <p class="card-text text-muted">ID: ${clientInfo['ID']}</p>
+                            <h5 class="card-title text-dark">${review['name']}</h5>
+                            <p class="card-text text-muted">Username: ${review['username']}</p>
+                            <p class="card-text text-muted">ID: ${review['clientId']}</p>
                         </div>
                         <div class="review-text mb-3">
                             <p class="card-text">${review['review']}</p>
                         </div>
                         <div class="d-flex justify-content-end">
                             ${(keyword == "info") ? 
-                                `<button class="btn btn-outline-secondary rounded-pill px-4" id='btn-details-reviews-${clientInfo['ID']}'>Details</button>` :
-                                `<button class="btn btn-outline-danger rounded-pill px-4" id='btn-delete-reviews-${clientInfo['ID']}'>Delete</button>`}
+                                `<button class="btn btn-outline-secondary rounded-pill px-4" id='btn-details-reviews-${review['clientId']}'>Details</button>` :
+                                `<button class="btn btn-outline-danger rounded-pill px-4" id='btn-delete-reviews-${review['clientId']}'>Delete</button>`}
                         </div>
                     </div>
                 </div>
             </div>`
         );
         if(keyword=="info"){ 
-            $(`#btn-details-reviews-${clientInfo['ID']}`).on("click", () => {  
-                detailsClientInfo(clientInfo['ID'],clients)} );
+            $(`#btn-details-reviews-${review['clientId']}`).on("click", () => {  
+                detailsClientInfo(review['clientId'])} );
         }
         if(keyword=="edit"){
-            $(`#btn-delete-reviews-${clientInfo['ID']}`).on("click", () => { 
-                deleteButtonEdit(book,clientInfo['ID'],clients, "review")});
+            $(`#btn-delete-reviews-${review['clientId']}`).on("click", () => { 
+                deleteButtonEdit(review['clientID'], "review")});
         }
     });
 
@@ -102,33 +119,30 @@ function showReviews(reviews,clients, keyword, book) {
 
 
 // Function to make use of the search-bar for book reviews
-function searchBookReviews(bookInfo,clients,keyword) {
+function searchBookReviews(reviews,keyword) {
 
     const searchedKeyword = $("#search-book-reviews").val();
     console.log("Keyword for reviews is: ", searchedKeyword);
 
-    const searchedReviews = searchBookReviewsHelper(bookInfo["Reviews"], clients, searchedKeyword);
+    const searchedReviews = searchBookReviewsHelper(reviews, searchedKeyword);
 
-    showReviews(searchedReviews, clients, keyword, bookInfo);
+    showReviews(searchedReviews, keyword);
 };
 
 
 // A helper function to search through reviews based on the keyword
-function searchBookReviewsHelper(reviews, clients, keyword) {
+function searchBookReviewsHelper(reviews, keyword) {
     if (keyword == "") {
         return reviews;
     } else {
         let searchedReviews = [];
 
-        reviews.forEach(review => {
-            const clientInfo = clients.find(client => client["ID"]==review["clientID"]);
+        reviews.forEach(review => {;
 
-            if (!clientInfo) return;
-
-            const clientName = clientInfo.Name.toLowerCase();
-            const clientUsername = clientInfo.Username.toLowerCase();
-            const clientID = clientInfo["ID"].toString();
-            const reviewText = review.review.toLowerCase();
+            const clientName = review["name"].toLowerCase();
+            const clientUsername = review["username"].toLowerCase();
+            const clientID = review["clientId"].toString();
+            const reviewText = review["review"].toLowerCase();
             
 
             if (clientName.includes(keyword.toLowerCase()) || 
@@ -152,29 +166,18 @@ function showBookLikes(clientLikes,bookInfo,keyword) {
     if(clientLikes==0) {
 
         showMessage("likes");
+        return;
     }
     else
     {
 
-        const clients = JSON.parse(localStorage.getItem("client"));
-        console.log("Clients: ", clients);
-        
-        if (!clients) {
-            console.log("Client list from local storage is empty or something is wrong");
-            return;
-        }
-        
-        const likedClients = clients.filter(client => bookInfo["Likes-clients"].includes(client["ID"]));
-        
-        console.log("Liked Clients: ", likedClients);
-        
-        showClients(likedClients,keyword, bookInfo,clients);
+        showClients(bookInfo["bookLikes"],keyword);
 
-        $("#search-book-likes").on("input", () => searchBookLikes(likedClients,keyword, bookInfo));
+        $("#search-book-likes").on("input", () => searchBookLikes(bookInfo["bookLikes"],keyword));
 
         $("#clear-book-likes").on("click" , () => {
             $("#search-book-likes").val("")
-            showClients(likedClients,keyword, bookInfo,clients);
+            showClients(bookInfo["bookLikes"],keyword);
         });
     }
 
@@ -184,42 +187,31 @@ function showBookLikes(clientLikes,bookInfo,keyword) {
 //Function to show the book details
 function detailsBookInfo(bookInfo) {
 
-    document.getElementById("book-image-container").innerHTML = `<img src="${bookInfo["Cover Image URL"]}" class="img-fluid rounded-4 border shadow-lg" alt="This is the book cover photo">`;
-    document.querySelector("#book-title-container").innerHTML=`<h3>${bookInfo["Title"]}</h3>`;
-    document.querySelector("#book-description-container").innerHTML=`<p> ${bookInfo["Description"]} </p>`;
-    document.querySelector("#book-info-author").innerHTML=`${bookInfo["Author"]}`;
-    document.querySelector("#book-info-genre").innerHTML=`${bookInfo["Genre"]} `;
-    document.querySelector("#book-info-year").innerHTML=` ${bookInfo["Published Year"]} `;
-    document.querySelector("#book-info-price").innerHTML=`${bookInfo["Price"]}$ `;
-    document.querySelector("#book-info-rating").innerHTML=`${bookInfo["Rating"]} `;
-    document.querySelector("#book-info-likes").innerHTML=`${bookInfo["Likes-clients"].length} `;
-    document.querySelector("#book-info-reviews").innerHTML=`${bookInfo["Reviews"].length} `;
-    document.querySelector("#book-info-id").innerHTML=`${bookInfo["ID"]} `;
+    document.getElementById("book-image-container").innerHTML = `<img src="${bookInfo["coverImageUrl"]}" class="img-fluid rounded-4 border shadow-lg" alt="This is the book cover photo">`;
+    document.querySelector("#book-title-container").innerHTML=`<h3>${bookInfo["title"]}</h3>`;
+    document.querySelector("#book-description-container").innerHTML=`<p> ${bookInfo["description"]} </p>`;
+    document.querySelector("#book-info-author").innerHTML=`${bookInfo["author"]}`;
+    document.querySelector("#book-info-genre").innerHTML=`${bookInfo["genre"]} `;
+    document.querySelector("#book-info-year").innerHTML=` ${bookInfo["publishedYear"]} `;
+    document.querySelector("#book-info-price").innerHTML=`${bookInfo["price"]}$ `;
+    document.querySelector("#book-info-rating").innerHTML=`${bookInfo["rating"]} `;
+    document.querySelector("#book-info-likes").innerHTML=`${bookInfo["noLikes"]} `;
+    document.querySelector("#book-info-reviews").innerHTML=`${bookInfo["noReviews"]} `;
+    document.querySelector("#book-info-id").innerHTML=`${bookInfo["bookId"]} `;
 
     $("#delete-btn-info").click(deleteBookInfo);
 
     $("#edit-btn-info").on("click", () => {
-        selectBook(bookInfo["ID"],"edit");
+        selectBook(bookInfo["bookId"],"edit");
     });
 
 };
 
 
 //Function for the details button of client-likes cards
-function detailsClientInfo(id,clients) {
+function detailsClientInfo(id) {
 
-    if (!clients) {
-        console.error("No client data found in localStorage.");
-        return;
-    }
-
-    const clientInfo = clients.find(client => client["ID"] == id);
-    if (!clientInfo) {
-        console.error("No matching client found for the given ID.");
-        return;
-    }
-
-    localStorage.setItem("selectedClient", JSON.stringify(clientInfo));
+    localStorage.setItem("selectedClient", JSON.stringify(id));
 
     window.open("info-client-manager.html", "_blank");
 };
@@ -240,7 +232,7 @@ function showMessage(id)
 
 
 //function to show the clients who liked the book
-function  showClients(likedClients,keyword, bookInfo,clients) {
+function  showClients(likedClients,keyword) {
 
     $("#book-likes").empty();
 
@@ -251,16 +243,16 @@ function  showClients(likedClients,keyword, bookInfo,clients) {
                     <div class="card-body d-flex justify-content-between w-100 p-3">
                         <!-- Client Info -->
                         <div class="client-info d-flex flex-column">
-                            <h5 class="card-title text-dark">${clientInfo['Name']}</h5>
-                            <p class="card-text text-muted">Username: ${clientInfo['Username']}</p>
-                            <p class="card-text text-muted">ID: ${clientInfo['ID']}</p>
+                            <h5 class="card-title text-dark">${clientInfo['name']}</h5>
+                            <p class="card-text text-muted">Username: ${clientInfo['username']}</p>
+                            <p class="card-text text-muted">ID: ${clientInfo['clientId']}</p>
                         </div>
                         ${(keyword=="info") ? 
                             `<div class="d-flex align-items-center p-2">
-                            <button class="btn btn-outline-primary rounded-pill px-4" id='btn-details-likes-${clientInfo['ID']}'>Details</button>
+                            <button class="btn btn-outline-primary rounded-pill px-4" id='btn-details-likes-${clientInfo['clientId']}'>Details</button>
                         </div> ` : 
                         `<div class="d-flex align-items-center p-2">
-                            <button class="btn btn-outline-danger rounded-pill px-4" id='btn-delete-likes-${clientInfo['ID']}'>Delete</button>
+                            <button class="btn btn-outline-danger rounded-pill px-4" id='btn-delete-likes-${clientInfo['clientId']}'>Delete</button>
                         </div>` }
 
                     </div>
@@ -269,12 +261,13 @@ function  showClients(likedClients,keyword, bookInfo,clients) {
         );
 
         if(keyword=="info"){
-            $(`#btn-details-likes-${clientInfo['ID']}`).on("click", () => {  
-                detailsClientInfo(clientInfo['ID'],clients)} );
-        }
+            $(`#btn-details-likes-${clientInfo['clientId']}`).on("click", () => {  
+
+                detailsClientInfo(clientInfo['clientId'])});
+        };
 
         if(keyword=="edit"){
-            $(`#btn-delete-likes-${clientInfo['ID']}`).on("click", () => { 
+            $(`#btn-delete-likes-${clientInfo['clientId']}`).on("click", () => { 
                 deleteButtonEdit(bookInfo,clientInfo['ID'],clients, "client")}); 
         }
     });
@@ -282,7 +275,7 @@ function  showClients(likedClients,keyword, bookInfo,clients) {
 
 
 //Function to delete a book on the info page
-function deleteBookInfo() {
+async function deleteBookInfo() {
 
     const agree = confirm("Are you sure you want to delete this Book?");
 
@@ -292,27 +285,30 @@ function deleteBookInfo() {
 
         console.log("Consoling book Info",bookInfo);
 
-        let books = JSON.parse(localStorage.getItem("book"));
+        const deleted = await deleteBookAPI(bookInfo)
 
-        console.log("Consoling the list of all the books: ", books);
-
-        books = books.filter(book => book.ID !== bookInfo.ID );
-
-        localStorage.setItem("book", JSON.stringify(books));
-
-        window.location.href="manager-book-management.html";
+        if(deleted)
+        {
+            window.location.href="manager-book-management.html";
+        }
+        else
+        {
+            alert("Book not deleted");
+        }
     }
 };
 
 
 //Function to make use of the search-bar
-function searchBookLikes(clients, keyword, book) {
+function searchBookLikes(clients, keyword) {
+
     const searchkeyword = $("#search-book-likes").val();
+
     console.log("Keyword is: ", searchkeyword);
 
     const searchedClients = searchBookLikesHelper(clients, searchkeyword);
 
-    showClients(searchedClients,keyword,book);
+    showClients(searchedClients,keyword);
 };
 
 
@@ -327,9 +323,9 @@ function searchBookLikesHelper(clients, searchkeyword) {
 
         clients.forEach(client => {
 
-            if (client["Name"].toLowerCase().includes(searchkeyword.toLowerCase())
-                || client["Username"].toLowerCase().includes(searchkeyword.toLowerCase())
-                || JSON.stringify(client["ID"]).toLowerCase().includes(searchkeyword.toLowerCase())) {
+            if (client["name"].toLowerCase().includes(searchkeyword.toLowerCase())
+                || client["username"].toLowerCase().includes(searchkeyword.toLowerCase())
+                || JSON.stringify(client["clientId"]).toLowerCase().includes(searchkeyword.toLowerCase())) {
                 searchedClients.push(client);
             }
         });
