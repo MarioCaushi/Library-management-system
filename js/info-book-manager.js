@@ -105,7 +105,7 @@ function showReviews(reviews, keyword) {
         }
         if (keyword == "edit") {
             $(`#btn-delete-reviews-${review['clientId']}`).on("click", () => {
-                deleteButtonEdit(review['clientID'], "review")
+                deleteButtonEdit(review['reviewId'], "review")
             });
         }
     });
@@ -270,7 +270,7 @@ function showClients(likedClients, keyword) {
 
         if (keyword == "edit") {
             $(`#btn-delete-likes-${clientInfo['clientId']}`).on("click", () => {
-                deleteButtonEdit(bookInfo, clientInfo['ID'], clients, "client")
+                deleteButtonEdit(clientInfo["idOfLikeBook"] ,"client");
             });
         }
     });
@@ -352,66 +352,44 @@ async function searchBookLikes(keyword) {
     showBookLikes(searchedLikes, keyword);
 };
 
+//Function to delete a review or a like from a book
+async function deleteEditBook(id, keyword)
+{
+    const url = `http://localhost:5223/Book/delete-review-like/${id}/${keyword}`;
+    try {
+        const response = await fetch(url, {
+            method: 'Delete',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+
+        if (!response.ok) {
+            return false;
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Failed to fetch book cards:', error);
+        return false;
+    }
+}
+
 
 //Function to give functionality to the delete buttons in the edit page
-function deleteButtonEdit(book, clientID, clients, keyword) {
+async function deleteButtonEdit(id, keyword) {
 
-    if (keyword == "client") {
+        const deleted = await deleteEditBook(id, keyword)
 
-        book["Likes-clients"] = book["Likes-clients"].filter(id => id != clientID);
+        if(deleted)
+        {
+            alert(`Client ${keyword} Deleted`);
 
-        localStorage.setItem("selectedBook", JSON.stringify(book));
+            location.reload();
+            return;
+        }
 
-        let books = JSON.parse(localStorage.getItem("book"));
-
-        books = books.map((newBook) => {
-            if (newBook["ID"] === book["ID"]) {
-                return { ...book };
-            }
-            return newBook;
-        });
-
-        localStorage.setItem("book", JSON.stringify(books));
-
-        clients.forEach(client => {
-
-            if (client["ID"] == clientID) {
-                client["Books-liked"] = client["Books-liked"].filter(id => id != book["ID"]);
-            }
-        });
-
-        localStorage.setItem("client", JSON.stringify(clients));
-
-        alert("Client Like Deleted");
-
-        location.reload();
-
-        showClients(book["Likes-clients"], keyword, book);
-    }
-
-    if (keyword == "review") {
-
-        book["Reviews"] = book["Reviews"].filter(review => review["clientID"] != clientID);
-
-        localStorage.setItem("selectedBook", JSON.stringify(book));
-
-        let books = JSON.parse(localStorage.getItem("book"));
-
-        books = books.map((newBook) => {
-            if (newBook["ID"] === book["ID"]) {
-                return { ...book };
-            }
-            return newBook;
-        });
-
-        localStorage.setItem("book", JSON.stringify(books));
-
-        alert("Review Deleted");
-
-        location.reload();
-
-        showReviews(book["Reviews"], clients, keyword, book);
-    }
+        alert(`Client ${keyword} not Deleted`);
 
 };
 
