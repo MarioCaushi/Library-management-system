@@ -66,8 +66,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginButton = document.getElementById("login-button");
   if (loginButton) {
     loginButton.addEventListener("click", evaluateLogin);
+
+    loginButton.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        evaluateLogin();
+      }
+    });
+
   } else {
     console.error("Login button not found!");
   }
 });
+
 
