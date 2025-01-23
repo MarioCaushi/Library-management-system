@@ -1,17 +1,19 @@
 import { logoutAction, selectBook } from "./manager-book-management.js";
-import { deleteBookInfo, showBookLikes, showBookReviews } from "./info-book-manager.js";
+import { deleteBookInfo, showBookLikes, showBookReviews, getBookInfoAPI } from "./info-book-manager.js";
 
 //Function to show the book details page
-function showEditBook(){
+async function showEditBook(){
 
-    let editBook = JSON.parse(localStorage.getItem("selectedBook"));
+    let bookId = JSON.parse(localStorage.getItem("selectedBook"));
+
+    const editBook = await getBookInfoAPI(bookId);
 
     if(!editBook){
         console.log("editBook from localstorage does not exist", editBook);
         return;
     }
 
-    document.title=`Book Edit - ${editBook["Title"]}`;
+    document.title=`Book Edit - ${editBook["title"]}`;
 
     showBookDetails(editBook);
 
@@ -21,104 +23,138 @@ function showEditBook(){
         showBookDetails(editBook)});
 
     $("#info-btn-edit").on("click", ()=>{
-        selectBook(editBook["ID"],"info");
+        selectBook(editBook["bookId"],"info");
     });
 
     $("#save-btn-edit").on("click", ()=>{
         saveEditBook(editBook);
     });
 
-    const clientLikes = editBook["Likes-clients"].length;
-    console.log("Book-likes length: ", clientLikes);
 
-    showBookLikes(clientLikes,editBook,"edit");
+    showBookLikes(editBook["bookLikes"],"edit");
 
-    const clientReviews =  editBook["Reviews"].length;
-    console.log("Book-reviews length: ", clientReviews);
-
-    showBookReviews(clientReviews, editBook, "edit");
+    showBookReviews(editBook["bookReviews"], "edit");
 
 };
 
 //Function to show the existing value of the book in the input field
 function showBookDetails(editBook) {
 
-    $("#title-edit-book ").val(`${editBook["Title"]} `);
-    $("#description-edit-book ").val(`${editBook["Description"]} `);
-    $("#author-edit-book ").val(`${editBook["Author"]} `);
-    $("#genre-edit-book ").val(`${editBook["Genre"]} `);
-    $("#year-edit-book ").val(editBook["Published Year"]);
-    $("#price-edit-book ").val(editBook["Price"]);
-    $("#rating-edit-book ").val(editBook["Rating"]);
-    $("#book-edit-likes ").html(`${editBook["Likes-clients"].length}`);
-    $("#book-edit-reviews ").html(`${editBook["Reviews"].length} `);
-    $("#book-edit-id ").html(`${editBook["ID"]} `);
-    $("#cover-image-edit").attr("src", `${editBook["Cover Image URL"]}`);
+    $("#title-edit-book ").val(`${editBook["title"]} `);
+    $("#description-edit-book ").val(`${editBook["description"]} `);
+    $("#author-edit-book ").val(`${editBook["author"]} `);
+    $("#genre-edit-book ").val(`${editBook["genre"]} `);
+    $("#year-edit-book ").val(editBook["publishedYear"]);
+    $("#price-edit-book ").val(editBook["price"]);
+    $("#rating-edit-book ").val(editBook["rating"]);
+    $("#book-edit-likes ").html(`${editBook["noLikes"]}`);
+    $("#book-edit-reviews ").html(`${editBook["noReviews"]} `);
+    $("#book-edit-id ").html(`${editBook["bookId"]} `);
+    $("#image-edit-book").val(`${editBook["coverImageUrl"]}`);
+    $("#cover-image-edit").attr("src", `${editBook["coverImageUrl"]}`);
 };
 
-//Function to give functionality to the save button
-function saveEditBook(editBook) {
+//Function to edit book in the backend
+async function editBookAPI(book)
+{
+    const url = `http://localhost:5223/Book/update-book`;
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(book),
+        });
 
-    if (editBook["Title"].toLowerCase().trim() === $("#title-edit-book").val().toLowerCase().trim() &&
-        editBook["Description"].toLowerCase().trim() === $("#description-edit-book").val().toLowerCase().trim() &&
-        editBook["Author"].toLowerCase().trim() === $("#author-edit-book").val().toLowerCase().trim() &&
-        editBook["Genre"].toLowerCase().trim() === $("#genre-edit-book").val().toLowerCase().trim() &&
-        editBook["Published Year"] == $("#year-edit-book").val() &&
-        editBook["Price"] == $("#price-edit-book").val() &&
-        editBook["Rating"] == $("#rating-edit-book").val() &&
-        !$("#image-edit-book").val()) {
+        if (!response.ok) {
+            return false;
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Failed to fetch book cards:', error);
+        return false;
+    }
+}
+
+//Function to give functionality to the save button
+async function saveEditBook(editBook) {
+
+    if (editBook["title"].toLowerCase().trim() === $("#title-edit-book").val().toLowerCase().trim() &&
+        editBook["description"].toLowerCase().trim() === $("#description-edit-book").val().toLowerCase().trim() &&
+        editBook["author"].toLowerCase().trim() === $("#author-edit-book").val().toLowerCase().trim() &&
+        editBook["genre"].toLowerCase().trim() === $("#genre-edit-book").val().toLowerCase().trim() &&
+        editBook["publishedYear"] == $("#year-edit-book").val() &&
+        editBook["price"] == $("#price-edit-book").val() &&
+        editBook["rating"] == $("#rating-edit-book").val() &&
+        editBook["coverImageUrl"] == $("#image-edit-book").val()) {
 
         alert("No changes were made!");
 
     } else {
-        if (editBook["Title"].toLowerCase().trim() !== $("#title-edit-book").val().toLowerCase().trim()) {
-            editBook["Title"] = $("#title-edit-book").val();
+
+        if (editBook["title"].toLowerCase().trim() !== $("#title-edit-book").val().toLowerCase().trim()) {
+            editBook["title"]= $("#title-edit-book").val();
         }
 
-        if (editBook["Description"].toLowerCase().trim() !== $("#description-edit-book").val().toLowerCase().trim()) {
-            editBook["Description"] = $("#description-edit-book").val();
+        if (editBook["description"].toLowerCase().trim() !== $("#description-edit-book").val().toLowerCase().trim()) {
+            editBook["description"]= $("#description-edit-book").val();
         }
 
-        if (editBook["Author"].toLowerCase().trim() !== $("#author-edit-book").val().toLowerCase().trim()) {
-            editBook["Author"] = $("#author-edit-book").val();
+        if (editBook["author"].toLowerCase().trim() !== $("#author-edit-book").val().toLowerCase().trim()) {
+            editBook["author"] = $("#author-edit-book").val();
         }
 
-        if (editBook["Genre"].toLowerCase().trim() !== $("#genre-edit-book").val().toLowerCase().trim()) {
-            editBook["Genre"] = $("#genre-edit-book").val();
+        if (editBook["genre"].toLowerCase().trim() !== $("#genre-edit-book").val().toLowerCase().trim()) {
+            editBook["genre"]= $("#genre-edit-book").val();
         }
 
-        if (editBook["Published Year"] != $("#year-edit-book").val()) {
-            editBook["Published Year"] = parseInt($("#year-edit-book").val());
+        if (editBook["publishedYear"] != $("#year-edit-book").val()) {
+            editBook["publishedYear"] = parseInt($("#year-edit-book").val());
         }
 
-        if (editBook["Price"] != $("#price-edit-book").val()) {
-            editBook["Price"] = parseFloat($("#price-edit-book").val());
+        if (editBook["price"] != $("#price-edit-book").val()) {
+            editBook["price"] = parseFloat($("#price-edit-book").val());
         }
 
-        if (editBook["Rating"] != $("#rating-edit-book").val()) {
-            editBook["Rating"] = parseFloat($("#rating-edit-book").val());
+        if (editBook["rating"] != $("#rating-edit-book").val()) {
+            editBook["rating"] = parseFloat($("#rating-edit-book").val());
         }
 
         if ($("#image-edit-book").val()) {
-            editBook["Cover Image URL"] = $("#image-edit-book").val();
+            editBook["coverImageUrl"] = $("#image-edit-book").val();
         }
 
-        localStorage.setItem("selectedBook", JSON.stringify(editBook));
+        //Code for Backend Connection
 
-        let books = JSON.parse(localStorage.getItem("book"));
+        const newBook = {
+            IdBook: editBook["bookId"],
+            Title: editBook["title"],
+            Author: editBook["author"],
+            Genre:  editBook["genre"],
+            PublishedYear:  editBook["publishedYear"],
+            Description: editBook["description"],
+            Price: editBook["price"],
+            CoverImageUrl: editBook["coverImageUrl"],
+            Rating:  editBook["rating"] ,
+            IdManager: Number(JSON.parse(localStorage.getItem("manager"))),
+        };
 
-        books = books.map((book) => {
-            if (book["ID"] === editBook["ID"]) {
-                return { ...editBook };
-            }
-            return book;
-        });
+        const isEdited = await editBookAPI(newBook)
 
-        localStorage.setItem("book", JSON.stringify(books));
+        if(isEdited)
+        {
+            window.location.reload(); 
 
-        window.location.reload(); 
-
-        alert("Changes saved successfully!");
+            alert("Changes saved successfully!");
+            return;
+        }
+        else
+        {
+            alert("Changes not saved successfully!");
+            return;
+        }
     }
 }
 

@@ -422,4 +422,4 @@ $(document).ready(function () {
 
 });
 
-export { showBookInfo, deleteBookInfo, showBookLikes, showBookReviews };
+export { showBookInfo, deleteBookInfo, showBookLikes, showBookReviews, getBookInfoAPI };
