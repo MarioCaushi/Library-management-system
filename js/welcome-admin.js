@@ -1,4 +1,3 @@
-import { fetchData } from "./index.js";
 
 function logoutAction() {
   const decision = confirm("Are you sure?");
@@ -11,69 +10,67 @@ function logoutAction() {
   }
 }
 
-function dataValidation() {
-  if (localStorage.length === 0) {
-    fetchData();
-  } else {
-    let manager = JSON.parse(localStorage.getItem("manager"));
-    console.log("Data Validation: ", manager);
 
-    if (!manager) {
-      fetchData();
+async function getManagerInfoById(id) {
+
+  const url =`http://localhost:5223/api/Manager/get-manager-by-id/${id}`
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+
+    });
+
+    if(!response.ok){
+      alert("Manager Info could not be fetched");
+      return null;
     }
+
+    return response.json();
+  }catch(error){
+    console.error("Manager Info could not be fetched", error);
   }
 }
 
-function showManagerInfo() {
+
+async function showManagerInfo() {
 
   const container = document.getElementById("welcomeAdmin-container");
   container.innerHTML = "";
 
-  const manager = JSON.parse(localStorage.getItem("manager"));
+  const managerId = Number(JSON.parse(localStorage.getItem("manager")));
 
+  const  manager = await getManagerInfoById(managerId);
+  console.log(manager);
   if (!manager) {
     container.innerHTML = `<p>Error: No manager data found. Please try again later.</p>`;
     return;
   }
 
-  const { Name, LastName, Email, Birthday, Username } = manager;
+  const { name, lastName, email, birthday, username, totalBooks, totalClients } = manager;
 
   container.innerHTML = `
       <div class="text-center">
-        <h3>${Name} ${LastName}</h3>
-        <p><strong>Email:</strong> ${Email}</p>
-        <p><strong>Birthday:</strong> ${Birthday}</p>
-        <p><strong>Username:</strong> ${Username}</p>
+        <h3>${name} ${lastName}</h3>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Birthday:</strong> ${birthday.slice(0,10)}</p>
+        <p><strong>Username:</strong> ${username}</p>
       </div>
     `;
 
+    document.getElementById("bookCount").textContent = totalBooks;
+    document.getElementById("clientCount").textContent = totalClients;
   
     const logoutButton = document.getElementById("logout-button");
     logoutButton.addEventListener("click", logoutAction);
   }
-  
-function updateStats() {
-  const books = JSON.parse(localStorage.getItem("book")) || [];
-  const clients = JSON.parse(localStorage.getItem("client")) || [];
 
-  const totalBooks = books.length;
-  const totalClients = clients.length;
-
-  document.getElementById("bookCount").textContent = totalBooks;
-  document.getElementById("clientCount").textContent = totalClients;
-}
-
-function navigateTo(page) {
-  window.location.href = page;
-}
-
-
-export { navigateTo };
 
 function initializeWelcomePage() {
-  dataValidation();
   showManagerInfo();
-  updateStats();
 }
 
 window.onload = initializeWelcomePage;

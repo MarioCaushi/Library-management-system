@@ -1,5 +1,3 @@
-import { fetchData } from "./index.js";
-
 // A function for the log out button to work
 function logoutAction() {
     const decision = confirm("Are you sure?");
@@ -11,47 +9,57 @@ function logoutAction() {
     }
 }
 
-// Data validation to check if data exists in localStorage and fetch if necessary
-function dataValidation() {
-    if (localStorage.length === 0) {
-        fetchData();
-    } else {
-        let manager = JSON.parse(localStorage.getItem("manager"));
-        let client = JSON.parse(localStorage.getItem("client"));
-        let book = JSON.parse(localStorage.getItem("book"));
 
-        if (!manager || !book || !client) {
-            fetchData();
+async function getAllClients() {
+    const url = `http://localhost:5223/api/Clients/get-all-clients`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok){
+            alert("Clients could not be fetched");
+            return null;
         }
+        return response.json();
+    }catch(error){
+        console.error("Clients could not be fetched", error);
     }
 }
 
-// Fetch clients from localStorage
-const clients = JSON.parse(localStorage.getItem("client")) || [];
-console.log(clients);
-
 // Function to display clients in the container
-function showClients(clients) {
+async function showClients(clients) {
     const container = document.getElementById("client-management-container");
 
+    if (!container) {
+        console.error("client-management-container not found in the DOM.");
+        return;
+    }
+
     container.innerHTML = ""; // Clear any existing content
+
+
+    if (!clients || clients.length === 0) {
+        container.innerHTML = `<p>No clients found.</p>`;
+        return;
+    }
 
     clients.forEach(client => {
         const card = document.createElement("div");
         card.className = "card mx-auto border border-dark border-opacity-50 rounded-3 shadow-md m-4 p-2";
         card.style.width = "400px"
-        // card.style.flex = "1 1 calc(30% - 20px)";
-        // card.style.display = "flex";
-        // card.style.flexDirection = "column";
-        // card.style.alignItems = "center";
 
-        let name = client["Name"];
-        let lastname = client["LastName"];
-        let username = client["Username"];
-        let id = client["ID"];
+        let name = client["name"];
+        let lastname = client["lastName"];
+        let username = client["username"];
+        let id = client["id"];
         const profileIconURL = "images/profile icon.png";
-        const likedBooksCount = client["Books-liked"] ? client["Books-liked"].length : 0;
-        const purchasedBooksCount = client["Books-purchased"] ? client["Books-purchased"].length : 0;
+        const likedBooksCount = client["booksLiked"] ;
+        const purchasedBooksCount = client["booksPurchased"];
         
 
         card.innerHTML = `
@@ -80,112 +88,99 @@ function showClients(clients) {
         // Attach event listeners for buttons
         const viewButton = card.querySelector(`#view-${id}`);
         viewButton.addEventListener("click", function () {
-            selectClient(id, "view",clients);
+            selectClient(id, "view");
         });
 
         const editButton = card.querySelector(`#edit-${id}`);
         editButton.addEventListener("click", function () {
-            selectClient(id, "edit",clients);
+            selectClient(id, "edit");
         });
 
         const deleteButton = card.querySelector(`#delete-${id}`);
         deleteButton.addEventListener("click", function () {
-            deleteClient(id, clients);
+            deleteClient(id);
         });
     });
 }
 
-function selectClient(id, action,clients) {
-
-    if (!clients) {
-        console.error("No client data found in localStorage.");
-        return;
-    }
-
-    const clientInfo = clients.find(client => client["ID"] == id);
-    if (!clientInfo) {
-        console.error("No matching client found for the given ID.");
-        return;
-    }
-
-    localStorage.setItem("selectedClient", JSON.stringify(clientInfo));
+function selectClient(id, action) {
+    localStorage.setItem("selectedClientId", id);
 
     if (action === "view") {
         window.open("info-client-manager.html", "_blank");
-    }  
-    
-    if (action === "edit") {
+    } else if (action === "edit") {
         window.open("edit-client-management.html", "_blank");
     }
 }
 
-
-// Function to search for clients by name or username
-function searchClient() {
+async function searchClient() {
     const searchValue = $("#search-client-input").val().toLowerCase();
 
+    const clients = await getAllClients();
+
+    if (!clients || clients.length === 0) {
+        return; 
+    }
+
     const searchResults = clients.filter(client => {
-        const name = client["Name"].toLowerCase();
-        const username = client["Username"].toLowerCase();
-        const lastname = client["LastName"].toLowerCase();
+        const name = client["name"]?.toLowerCase() || "";
+        const username = client["username"]?.toLowerCase() || "";
+        const lastname = client["lastName"]?.toLowerCase() || "";
 
         return name.includes(searchValue) || lastname.includes(searchValue) ||
         username.includes(searchValue);
+
+       
     });
 
-    if (!searchValue) {
-        showClients(clients);
-    } else {
-        showClients(searchResults);
+    showClients(searchResults);
+}
+
+  
+// Function to handle delete client action
+async function deleteClient(id) {
+    const agree = confirm("Are you sure you want to delete this client?");
+
+    if (agree) {
+        const url = `http://localhost:5223/api/Clients/delete-client/${id}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                alert("Client could not be deleted.");
+                return;
+            }
+
+            // Refresh the client list after deletion
+            showClients();
+        } catch (error) {
+            console.error("Client could not be deleted", error);
+        }
     }
 }
 
 
-// DOM Content Loaded
 document.addEventListener("DOMContentLoaded", function() {
     try {
         document.getElementById("logout-button").addEventListener("click", logoutAction);
-        dataValidation();
-        showClients(clients);
+       
+        getAllClients().then(clients => showClients(clients));
 
-        // Ensure input event is working
         const searchInput = document.getElementById("search-client-input");
         if (searchInput) {
             searchInput.addEventListener("input", searchClient);
         } else {
-            console.error("Search input field not found");
+            console.warn("Search input field not found. This is expected on some pages.");
         }
-    } catch (error) {
+    }catch (error) {
         console.error("An error occurred:", error);
     }
 });
 
-
-// Function to handle delete client action
-function deleteClient(id, clients) {
-    const agree = confirm("Are you sure?");
-
-    if(agree) {
-        const updatedClients = clients.filter(client => client.ID !== id);
-        localStorage.setItem("client", JSON.stringify(updatedClients));
-        showClients(updatedClients); 
-    } 
-}
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    try {
-        document.getElementById("logout-button").addEventListener("click", logoutAction);
-        dataValidation();
-        showClients(clients);
-        
-        document.getElementById("search-client-input").addEventListener("input", searchClient);
-
-    } catch (error) {
-        console.error("An error occurred:", error);
-
-    }
-});
-
-export{logoutAction, selectClient};
+export{logoutAction, deleteClient};
