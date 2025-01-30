@@ -136,19 +136,5 @@
       crossorigin="anonymous"
     ></script>
     <script src="js/welcome-client.js" type="module"></script>
-    <script>
-      function saveChanges() {
-        const userData = {
-          Name: document.getElementById("name").innerText.trim(),
-          LastName: document.getElementById("lastName").innerText.trim(),
-          Username: document.getElementById("username").innerText.trim(),
-          Email: document.getElementById("email").innerText.trim(),
-          Birthday: document.getElementById("birthday").innerText.trim(),
-        };
-        localStorage.setItem("user", JSON.stringify(userData));
-        console.log(userData);
-        alert("Changes saved successfully!");
-      }
-    </script>
   </body>
 </html>
