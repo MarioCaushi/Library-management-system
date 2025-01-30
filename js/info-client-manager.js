@@ -1,90 +1,167 @@
-import { logoutAction, selectClient } from "./manager-client-management.js";
+import { logoutAction, deleteClient } from "./manager-client-management.js";
 
-function showClientInfo() {
-    // Get client, books, clients from local storage
-    const clientInfo = JSON.parse(localStorage.getItem("selectedClient"));
-    const books = JSON.parse(localStorage.getItem("book"));
-    const clients = JSON.parse(localStorage.getItem("client"));
-
-    if (!clientInfo) {
-        console.error("No client Info found from manager-client-management.");
+async function showClientInfo() {
+    // Get client, books, clients from backend
+    const clientId = localStorage.getItem("selectedClientId");
+    
+    if (!clientId) {
+        console.error("No client ID found in localStorage.");
         return;
     }
 
-    if (!books) {
-        console.error("No books found from manager-client-management.");
-        return;
-    }
+    try {
+        // Fetch client info from the backend
+        const clientInfo = await getClientInfo(clientId);
+        if (!clientInfo) {
+            console.error("No client info found from the backend.");
+            return;
+        }
 
-    document.title = `Client Info - ${clientInfo["Name"]}!`;
-
-    showClientData(clientInfo);
-
-    $("#delete-btn").click(deleteClient);
-
-    $("#edit-btn").on("click", () => {
-        selectClient(clientInfo["ID"],"edit",clients );
-    });
+        document.title = `Client Info - ${clientInfo.name}!`;
 
 
-    document.getElementById("purchased-tab").addEventListener("click", () => {
-        showTabContent(clientInfo, books, "purchased");
-    });
+        showClientData(clientInfo);
 
-    document.getElementById("reviewed-tab").addEventListener("click", () => {
-        showTabContent(clientInfo, books, "reviewed");
-    });
+        document.getElementById("delete-btn").addEventListener("click", () => deleteClient(clientId));
+        document.getElementById("edit-btn").addEventListener("click", () => {
+            console.log(`Editing client with ID: ${clientId}`);
+        
+            window.open(`edit-client-management.html?clientId=${clientId}`, "_blank");
+        });
 
-    document.getElementById("liked-tab").addEventListener("click", () => {
-        showTabContent(clientInfo, books, "liked");
-    });
+        document.getElementById("purchased-tab").addEventListener("click", () => showTabContent(clientId, "purchased"));
+        document.getElementById("reviewed-tab").addEventListener("click", () => showTabContent(clientId, "reviewed"));
+        document.getElementById("liked-tab").addEventListener("click", () => showTabContent(clientId, "liked"));
+
+    } catch (error) {
+        console.error("An error occurred while fetching client info:", error);
+    }  
 
 }
 
-function showTabContent(clientInfo, books, action) {
+async function getClientInfo(clientId) {
+    const url = `http://localhost:5223/api/Clients/get-client-info/${clientId}`;
 
-    document.getElementById("book-cards").innerHTML="";
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
-    if(action == "purchased") {
+        if (!response.ok) {
+            alert("Client info could not be fetched.");
+            return null;
+        }
 
-        const booksPurchased = clientInfo["Books-purchased"];
-
-        showBookPurchased(booksPurchased, books);
+        return response.json();
+    } catch (error) {
+        console.error("Client info could not be fetched", error);
+        return null;
     }
+}
+ 
 
-    if(action == "liked")
-    {
-        const booksLiked = clientInfo["Books-liked"];
+async function showTabContent(clientId, action) {
 
-        showBookPurchased(booksLiked, books);
+    const bookCardsContainer = document.getElementById("book-cards");
+    bookCardsContainer.innerHTML = "";
+
+    try {
+        if (action === "purchased") {
+            const purchasedBooks = await getPurchasedBooks(clientId);
+            showBookPurchased(purchasedBooks);
+        } else if (action === "liked") {
+            const likedBooks = await getLikedBooks(clientId);
+            showBookPurchased(likedBooks);
+        } else if (action === "reviewed") {
+            const reviews = await getClientReviews(clientId);
+            showBooksReviewed(reviews);
+        }
+    } catch (error) {
+        console.error("An error occurred while fetching tab content:", error);
     }
+}
 
-    if(action == "reviewed") {
+async function getPurchasedBooks(clientId) {
+    const url = `http://localhost:5223/api/Clients/${clientId}/purchased-books`;
 
-        const booksReviewed = books.filter(book => {
-            return book["Reviews"].some(review => review["clientID"] == clientInfo["ID"]);
-        });        
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
-        console.log(booksReviewed);
-    
-        showBooksReviwed(booksReviewed,clientInfo);
+        if (!response.ok) {
+            alert("Purchased books could not be fetched.");
+            return null;
+        }
+
+        return response.json();
+    } catch (error) {
+        console.error("Purchased books could not be fetched", error);
+    }
+}
+
+async function getLikedBooks(clientId) {
+    const url = `http://localhost:5223/api/Clients/${clientId}/liked-books`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            alert("Liked books could not be fetched.");
+            return null;
+        }
+
+        return response.json();
+    } catch (error) {
+        console.error("Liked books could not be fetched", error);
+    }
+}
+
+async function getClientReviews(clientId) {
+    const url = `http://localhost:5223/api/Clients/${clientId}/reviews`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            alert("Client reviews could not be fetched.");
+            return null;
+        }
+
+        return response.json();
+    } catch (error) {
+        console.error("Client reviews could not be fetched", error);
     }
 }
     
-    function showBooksReviwed(booksReviewed,clientInfo) {
-
+    function showBooksReviewed(reviews) {
+        console.log(reviews)
         const bookCardsContainer = document.getElementById("book-cards");
     
         bookCardsContainer.innerHTML = "";
     
-        if (booksReviewed.length === 0) {
+        if (!reviews || reviews.length === 0) {
             bookCardsContainer.innerHTML = "<div style='color: #FF0000;'>No content</div>";
         } else {
 
-            booksReviewed.forEach(book => {
+            reviews.forEach(review => {
 
-                const review = book["Reviews"].find(review => review["clientID"] == clientInfo["ID"]);
-    
                 const cardDiv = document.createElement("div");
                 cardDiv.className = "col-12 mb-2 p-2";
     
@@ -93,15 +170,15 @@ function showTabContent(clientInfo, books, action) {
                    <div class="card border-2 rounded-4 shadow-sm mb-3">
                         <div class="card-body d-flex flex-column p-4">
                             <div class="client-info mb-3">
-                                <h5 class="card-title text-dark">${book['Title']}</h5>
-                                <p class="card-text text-muted">Username: ${book['Author']}</p>
-                                <p class="card-text text-muted">ID: ${book['ID']}</p>
+                                <h5 class="card-title text-dark">${review.bookTitle}</h5>
+                                <p class="card-text text-muted">Username: ${review.author}</p>
+                                <p class="card-text text-muted">ID: ${review.idOfReview}</p>
                             </div>
                             <div class="review-text mb-3">
-                                <p class="card-text">${review['review']}</p>
+                                <p class="card-text">${review.reviewText}</p>
                             </div>
                             <div class="d-flex justify-content-center">
-                                <button class="btn btn-outline-secondary rounded-pill px-4" id='btn-details-reviews-${book['ID']}'>Details</button>
+                                <button class="btn btn-outline-secondary rounded-pill px-4" id='btn-details-reviews-${review.bookId}'>Details</button>
                             </div>
                         </div>
                     </div>
@@ -111,25 +188,25 @@ function showTabContent(clientInfo, books, action) {
                 bookCardsContainer.appendChild(cardDiv);
     
                 // Attach the event listener to the button
-                const detailsButton = cardDiv.querySelector(`#btn-details-reviews-${book['ID']}`);
+                const detailsButton = cardDiv.querySelector(`#btn-details-reviews-${review.bookId}`);
                 detailsButton.addEventListener("click", () => {
-                    showBookDetailsTab(book);  // Make sure this function works with a single book object
+                    localStorage.setItem("selectedBookId", review.bookId); 
+                    window.open("info-book-manager.html", "_blank");
                 });
             });
         }
     }
     
 
-function showBookPurchased(booksPurchased, books) {
+function showBookPurchased(books) {
     const bookCardsContainer = document.getElementById("book-cards");
-
     bookCardsContainer.innerHTML = "";
 
-    if (booksPurchased.length === 0) {
+    if (!books || books.length === 0) {
         bookCardsContainer.innerHTML = "<div style='color: #FF0000;'>No content</div>";
+        return;
     } else {
-        booksPurchased.forEach((id) => {
-            const book = books.find((book) => book["ID"] === id);
+        books.forEach((book) => {
             console.log("Book in show purchased books client manager", book);
 
             // Create the card div
@@ -141,18 +218,18 @@ function showBookPurchased(booksPurchased, books) {
             cardDiv.innerHTML = `
                 <div class="row align-items-center p-3">
                     <div class="col-auto">
-                        <img src="${book["Cover Image URL"]}"
+                        <img src="${book.url}"
                             class="img-fluid" alt="Book Cover" style="width: 100px; height: 130px;">
                     </div>
                     <div class="col">
                         <div class="card-body">
-                            <h5 class="card-title mb-1">${book["Title"]}</h5>
-                            <p class="card-text mb-1"><strong>Author:</strong> ${book["Author"]}</p>
-                            <p class="card-text"><strong>ID:</strong> ${book["ID"]}</p>
+                            <h5 class="card-title mb-1">${book.title}</h5>
+                            <p class="card-text mb-1"><strong>Author:</strong> ${book.author}</p>
+                            <p class="card-text"><strong>ID:</strong> ${book.bookId}</p>
                         </div>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-outline-primary details-btn" style="width: 170px;" id="details-purchased-${id}">Details</button>
+                        <button class="btn btn-outline-primary details-btn" style="width: 170px;" id="details-purchased-${book.id}">Details</button>
                     </div>
                 </div>
             `;
@@ -160,40 +237,29 @@ function showBookPurchased(booksPurchased, books) {
             // Append the card to cardDic
             bookCardsContainer.appendChild(cardDiv);
 
-            const detailsButton = cardDiv.querySelector(`#details-purchased-${id}`);
+            const detailsButton = cardDiv.querySelector(`#details-purchased-${book.id}`);
             detailsButton.addEventListener("click", () => {
-                showBookDetailsTab(book);
+                localStorage.setItem("selectedBookId", book.id); 
+                window.open("info-book-manager.html", "_blank");
             });
         });
     }
 }
 
-function showBookDetailsTab (book) {
-    localStorage.setItem("selectedBook",JSON.stringify(book));
-    window.open("info-book-manager.html", "_blank");
-}
 
-
-function deleteClient(id, clients) {
-    const agree = confirm("Are you sure?");
-
-    if(agree) {
-        const updatedClients = clients.filter(client => client.ID !== id);
-        localStorage.setItem("client", JSON.stringify(updatedClients));
-        showClients(updatedClients); 
-    } 
-}
-
-function showClientData(clientInfo){
+async function showClientData(clientInfo){
     const clientName = document.getElementById('client-name');
-    clientName.textContent = `${clientInfo["Name"]} ${clientInfo["LastName"]}`;
 
-    document.querySelector("#client-name").innerHTML = `${clientInfo["Name"]} ${clientInfo["LastName"]}`;
-    document.querySelector("#client-email").innerHTML = `${clientInfo["Email"]}`;
-    document.querySelector("#client-birthday").innerHTML = `${clientInfo["Birthday"]}`;
-    document.querySelector("#client-username").innerHTML = `${clientInfo["Username"]}`;
-    document.querySelector("#client-password").innerHTML = `${clientInfo["Password"]}`;
-    document.querySelector("#client-id").innerHTML = `${clientInfo["ID"]}`;
+    console.log("Clients data:", clientInfo);
+
+    clientName.textContent = `${clientInfo.name} ${clientInfo.lastName}`;
+
+    document.querySelector("#client-name").innerHTML = `${clientInfo.name} ${clientInfo.lastName}`;
+    document.querySelector("#client-email").innerHTML = `${clientInfo.email}`;
+    document.querySelector("#client-birthday").innerHTML = `${clientInfo.birthday.slice(0,10)}`;
+    document.querySelector("#client-username").innerHTML = `${clientInfo.username}`;
+    document.querySelector("#client-password").innerHTML = `${clientInfo.password}`;
+    document.querySelector("#client-id").innerHTML = `${clientInfo.id}`;
 }
 
 
@@ -206,9 +272,9 @@ document.addEventListener("DOMContentLoaded", () => {
         console.warn("Logout button not found.");
     }
 
-    // Display client info
-    showClientInfo();
-
+    setTimeout(() => {
+        showClientInfo();
+    }, 500); 
 });
 
 export { showBookPurchased };
