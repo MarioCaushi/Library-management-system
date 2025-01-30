@@ -1,25 +1,20 @@
 import { logoutAction } from "./manager-client-management.js";
 import { showBookPurchased } from './info-client-manager.js';
 
-
-const urlParams = new URLSearchParams(window.location.search);
-const clientId = urlParams.get("clientId");
-console.log(`Client ID: ${clientId}`);
-
 async function showEditClient() {
     try {
-        const clientInfo = await getClientInfo(clientId);
+        const clientInfo = await getClientInfo(Number(JSON.parse(localStorage.getItem("selectedClient"))));
         
         document.title = `Edit Client Info - ${clientInfo.name}!`;
         showClientData(clientInfo);
 
-        $("#delete-btn").click(() => deleteClient(clientId));
-        $("#save-btn").click(() => saveEditClient(clientId));
-        $("#discard-btn").click(() => showClientData(clientInfo));
+        $("#delete-btn-edit").click(() => deleteClientEdit(Number(JSON.parse(localStorage.getItem("selectedClient")))));
+        $("#save-btn").click(() => saveEditClient(Number(JSON.parse(localStorage.getItem("selectedClient")))));
+        $("#discard-btn").click(() => showClientData(Number(JSON.parse(localStorage.getItem("selectedClient")))));
 
-        document.getElementById("purchased-tab").addEventListener("click", () => showTabContent(clientId, "purchased"));
-        document.getElementById("reviewed-tab").addEventListener("click", () => showTabContent(clientId, "reviewed"));
-        document.getElementById("liked-tab").addEventListener("click", () => showTabContent(clientId, "liked"));
+        document.getElementById("purchased-tab").addEventListener("click", () => showTabContent(Number(JSON.parse(localStorage.getItem("selectedClient"))), "purchased"));
+        document.getElementById("reviewed-tab").addEventListener("click", () => showTabContent(Number(JSON.parse(localStorage.getItem("selectedClient"))), "reviewed"));
+        document.getElementById("liked-tab").addEventListener("click", () => showTabContent(Number(JSON.parse(localStorage.getItem("selectedClient"))), "liked"));
 
     } catch (error) {
         console.error("Error loading client info:", error);
@@ -51,9 +46,10 @@ async function updateClient(clientId, clientData) {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return await response.json();
+        return true;
     } catch (error) {
         console.error('Error updating client data:', error);
+        return false;
     }
 }
 
@@ -110,9 +106,7 @@ function showBooksReviewed(books, clientInfo) {
 
     books.forEach(book => {
 
-        if (book.clientID !== clientInfo.ID) {
-            return; // Skip books that the client hasn't reviewed
-        }
+        console.log(book);
 
         const cardDiv = document.createElement("div");
         cardDiv.className = "col-12 mb-2 p-2";
@@ -141,16 +135,17 @@ function showBooksReviewed(books, clientInfo) {
     
         // Attach the event listener to the button
         cardDiv.querySelector(`#btn-delete-reviews-${book.reviewOfId}`).addEventListener("click", () => 
-            deleteReview(book,clientInfo));
+            deleteReview(book.idOfReview,clientInfo));
         });
 }
 
-async function deleteReview(book,clientInfo,booksReviewed){
+async function deleteReview(book,clientID){
     const agree = confirm("Are you sure you want to delete this review?");
     if (!agree) return;
+    console.log(clientID);
 
     try {
-        const response = await fetch(`http://localhost:5223/api/Clients/delete-review/${clientInfo.id}/${book.id}`, {
+        const response = await fetch(`http://localhost:5223/api/Clients/clients/${clientID}/reviews/${book}`, {
             method: 'DELETE',
         });
 
@@ -218,7 +213,7 @@ async function deleteLike(book, clientInfo){
     if (!agree) return;
 
     try {
-        const response = await fetch(`http://localhost:5223/api/Clients/clients/${clientInfo.id}/liked-books/${book.id}`, {
+        const response = await fetch(`http://localhost:5223/api/Clients/clients/${clientInfo}/liked-books/${book.id}`, {
             method: 'DELETE',
         });
 
@@ -234,7 +229,7 @@ async function deleteLike(book, clientInfo){
 
 
 
-async function deleteClient(clientId) {
+async function deleteClientEdit(clientId) {
     const agree = confirm("Are you sure you want to delete this client?");
     if (!agree) return;
 
@@ -246,7 +241,7 @@ async function deleteClient(clientId) {
         if (!response.ok) throw new Error('Failed to delete client');
 
         alert("Client deleted successfully!");
-        window.location.href = "/client-management.html"; // Redirect to the client management page
+        window.location.href = "/manager-client-management.html"; 
     } catch (error) {
         console.error('Error deleting client:', error);
         alert("Failed to delete client. Please try again.");
@@ -287,6 +282,8 @@ async function saveEditClient(clientId) {
         Username: $("#client-username-input").val().trim(),
         Password: $("#client-password-input").val().trim(),
     };
+
+    console.log(updateClient);
 
     if (editClient.name.trim().toLowerCase() === updatedClient.Name.toLowerCase() &&
     editClient.lastName.trim().toLowerCase() === updatedClient.LastName.toLowerCase() &&

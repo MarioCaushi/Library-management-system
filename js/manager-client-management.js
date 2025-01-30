@@ -98,13 +98,13 @@ async function showClients(clients) {
 
         const deleteButton = card.querySelector(`#delete-${id}`);
         deleteButton.addEventListener("click", function () {
-            deleteClient(id);
+            deleteClient(id, clients);
         });
     });
 }
 
 function selectClient(id, action) {
-    localStorage.setItem("selectedClientId", id);
+    localStorage.setItem("selectedClient", id);
 
     if (action === "view") {
         window.open("info-client-manager.html", "_blank");
@@ -138,7 +138,7 @@ async function searchClient() {
 
   
 // Function to handle delete client action
-async function deleteClient(id) {
+async function deleteClient(id, clients) {
     const agree = confirm("Are you sure you want to delete this client?");
 
     if (agree) {
@@ -158,7 +158,7 @@ async function deleteClient(id) {
             }
 
             // Refresh the client list after deletion
-            showClients();
+            showClients(clients);
         } catch (error) {
             console.error("Client could not be deleted", error);
         }
