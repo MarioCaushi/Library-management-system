@@ -1,29 +1,176 @@
-books = JSON.parse(localStorage.getItem("book"));
-clients = JSON.parse(localStorage.getItem("client"));
-user = JSON.parse(localStorage.getItem("user"));
-const cartBooks = JSON.parse(localStorage.getItem("cartBooks")) || [];
-const renderAllBooks = () => {
+let userID = JSON.parse(localStorage.getItem("user"));
+let cartBooks = JSON.parse(localStorage.getItem("cartBooks")) || [];
+
+const fetchBooks = async () => {
+  const url = `http://localhost:5223/Browser/books`;
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch books:", error);
+    return null;
+  }
+};
+
+const fetchBook = async (id) => {
+  const url = `http://localhost:5223/Browser/books/${id}`;
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch specific book", error);
+    return null;
+  }
+};
+
+const fetchBookReviews = async (id) => {
+  const url = `http://localhost:5223/Browser/get-book-reviews/${id}`;
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch this book's reviews", error);
+    return null;
+  }
+};
+
+const addBookReview = async (bookId, clientId, review) => {
+  const url = `http://localhost:5223/Browser/client/${clientId}/add-review/${bookId}`;
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        IdClient: `${clientId}`,
+        IdBook: `${bookId}`,
+        ReviewText: `${review}`,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to add review", error);
+    return null;
+  }
+};
+
+const fetchUser = async (id) => {
+  const url = `http://localhost:5223/Browser/client/${id}`;
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to get current user", error);
+    return null;
+  }
+};
+
+const createCart = async (id) => {
+  const url = `http://localhost:5223/Cart/cart/${id}`;
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to get cart", error);
+    return null;
+  }
+};
+
+const fetchLikes = async (id) => {
+  const url = `http://localhost:5223/api/Clients/${id}/liked-books`;
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch likes:", error);
+    return null;
+  }
+};
+
+const deleteBookLike = async (bookId, userId) => {
+  const url = `http://localhost:5223/api/Clients/clients/${userId}/liked-books/${bookId}`;
+  try {
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to delete like", error);
+    return null;
+  }
+};
+
+const addLike = async (bookId, userId) => {
+  const url = `http://localhost:5223/Browser/client/${userId}/books/${bookId}/add-like`;
+  try {
+    await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.error("Failed to add like", error);
+    return null;
+  }
+};
+
+const renderAllBooks = async () => {
+  let books = await fetchBooks();
   let pageContainer = document.getElementById("books-container");
   pageContainer.innerHTML = "";
   pageContainer.innerHTML +=
     "<div id='contain'><ul id='book-grid' type='none'></ul></div>";
   let booksTemplate = "";
-
   books.forEach((book) => {
-    booksTemplate += `<li class="book-container" id="${book.ID}" >
-    <img id="cover-img" src="${book["Cover Image URL"]}" onclick="renderbookInfo(${book.ID})" />
+    booksTemplate += `<li class="book-container" id="${book.idBook}" >
+    <img id="cover-img" src="${book.coverImageUrl}" onclick="renderbookInfo(${book.idBook})" />
     <div id="book-details">
-        <h2 id="book-title" >${book.Title}</h2>
-        <span id="book-author">Author: ${book.Author}</span>
-        <span id="book-year">Published Year: ${book["Published Year"]}</span>
-        <span id="book-rating">Rating: ${book.Rating} / 5</span>
-        <span id="book-price">$${book.Price} USD</span>
-        <button id="like-btn" onclick="checkUserLikes(${book.ID})">
+        <h2 id="book-title" >${book.title}</h2>
+        <span id="book-author">Author: ${book.author}</span>
+        <span id="book-year">Published Year: ${book.publishedYear}</span>
+        <span id="book-rating">Rating: ${book.rating} / 5</span>
+        <span id="book-price">$${book.price} USD</span>
+        <button id="like-btn" onclick="checkUserLikes(${book.idBook})">
             <i class="fas fa-heart"></i>Like
-            <span class="like-count" id="like-count${book.ID}">${book["Likes-clients"].length}</span>
+            <span class="like-count" id="like-count${book.idBook}">${book.likes}</span>
         </button>
         <br>
-        <button id="cart-btn" onclick="addBookToCart(${book.ID})">
+        <button id="cart-btn" onclick="addBookToCart(${book.idBook})">
             <i class="fas fa-shopping-cart"></i>Add to Cart
         </button>
     </div>
@@ -33,8 +180,9 @@ const renderAllBooks = () => {
   document.getElementById("book-grid").innerHTML += booksTemplate;
 };
 
-const renderbookInfo = (bookID) => {
-  specificBook = books[bookID - 1];
+const renderbookInfo = async (bookID) => {
+  let specificBook = await fetchBook(bookID);
+
   let bookInfo = document.getElementById("books-container");
   let bookStyling = document.getElementsByTagName("head")[0];
   bookInfo.innerHTML = `
@@ -46,22 +194,22 @@ const renderbookInfo = (bookID) => {
     <div id="specific-book-container">
       <div id="specific-book-details">
         <div id="specific-cover-image">
-          <img src="${specificBook["Cover Image URL"]}"
+          <img src="${specificBook.coverImageUrl}"
         </div>
         <div id="specific-book-info">
-          <h2 id="specific-title">${specificBook.Title}</h2>
-          <p id="specific-author"><strong>Author: </strong>${specificBook.Author}</p>
-          <p id="specific-genre"><strong>Genre: </strong>${specificBook.Genre}</p>
-          <p id="specific-published"><strong>Published Year: </strong>${specificBook["Published Year"]}</p>
-          <p id="specific-description"><strong>Description: </strong>${specificBook.Description}</p>
+          <h2 id="specific-title">${specificBook.title}</h2>
+          <p id="specific-author"><strong>Author: </strong>${specificBook.author}</p>
+          <p id="specific-genre"><strong>Genre: </strong>${specificBook.genre}</p>
+          <p id="specific-published"><strong>Published Year: </strong>${specificBook.publishedYear}</p>
+          <p id="specific-description"><strong>Description: </strong>${specificBook.description}</p>
           <div>
-            <span id="specific-price"><strong>Price: </strong>${specificBook.Price}$</span>
-            <span id="specific-rating"><strong>Rating: </strong>${specificBook.Rating} / 5</span>
+            <span id="specific-price"><strong>Price: </strong>${specificBook.price}$</span>
+            <span id="specific-rating"><strong>Rating: </strong>${specificBook.rating} / 5</span>
           </div>
           <div>
             <button id="like-btn" onclick="checkUserLikes(${bookID})>
             <i class="fas fa-heart"></i>Like
-            <span class="like-count" id="like-count${bookID}">${specificBook["Likes-clients"].length}</span>
+            <span class="like-count" id="like-count${bookID}">${specificBook.likes}</span>
             </button>
             <button id="cart-btn" onclick="addBookToCart(${bookID})">
             <i class="fas fa-shopping-cart"></i>Add to Cart
@@ -71,21 +219,19 @@ const renderbookInfo = (bookID) => {
       </div>
         `;
 
-  const specificBookReviews = specificBook.Reviews;
+  let specificBookReviews = await fetchBookReviews(bookID);
   bookInfoTemplate += `
   <div class="add-review">
     <h3>Add Your Review</h3>
     <textarea id="review-input" placeholder="Write your review here..." rows="4" cols="50"></textarea>
-    <button id="submit-review" onclick="submitReview()">Submit Review</button>
+    <button id="submit-review" onclick="submitReview(${bookID})">Submit Review</button>
   </div>
   <h3>Reviews:</h3>
   <div id="reviews-container">`;
   specificBookReviews.forEach((review) => {
     bookInfoTemplate += `
       <div class="review">
-        <span id="review-header"><strong>${
-          clients[review.clientID - 1].Username
-        }</strong> has left a review: </span>
+        <span id="review-header"><strong>${review.username}</strong> has left a review: </span>
         <p id="review-content">${review.review}</p>
       </div>
     `;
@@ -276,11 +422,10 @@ const renderbookInfo = (bookID) => {
   bookStyling.innerHTML += bookStylingTemplate;
 };
 
-const addBookToCart = (bookID) => {
-  if (cartBooks.find((book) => book.ID === bookID)) {
-    return;
-  }
-  cartBooks.push(books[bookID - 1]);
+const addBookToCart = async (bookID) => {
+  book = await fetchBook(bookID);
+  cartBooks.push(book);
+
   console.log(cartBooks);
 
   const cartButton = document.getElementById("cart-button-container");
@@ -290,8 +435,10 @@ const addBookToCart = (bookID) => {
   }, 3000);
 };
 
-const submitReview = () => {
+const submitReview = async (bookID) => {
+  let user = await fetchUser(userID);
   const reviewInput = document.getElementById("review-input").value;
+  addBookReview(bookID, userID, reviewInput);
 
   if (reviewInput.trim() === "") {
     alert("Please write a review before submitting.");
@@ -300,7 +447,7 @@ const submitReview = () => {
 
   const newReviewTemplate = `
     <div class="review">
-        <span id="review-header"><strong>${user.Username}</strong> has left a review: </span>
+        <span id="review-header"><strong>${user.username}</strong> has left a review: </span>
         <p id="review-content">${reviewInput}</p>
       </div>
   `;
@@ -309,16 +456,9 @@ const submitReview = () => {
   document.getElementById("review-input").value = "";
 };
 
-const checkUserLikes = (bookID) => {
-  if (user["Books-liked"].includes(bookID)) {
-    $("#like-count" + bookID).text(
-      books[bookID - 1]["Likes-clients"].length - 1
-    );
-  } else {
-    $("#like-count" + bookID).text(
-      books[bookID - 1]["Likes-clients"].length + 1
-    );
-  }
+const checkUserLikes = async (bookID) => {
+  await addLike(bookID, userID);
+  window.location.reload();
 };
 
 $("#go-cart-button").click(function (e) {
