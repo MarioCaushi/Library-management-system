@@ -1,8 +1,8 @@
-import { logoutAction, deleteClient } from "./manager-client-management.js";
+import { logoutAction } from "./manager-client-management.js";
 
 async function showClientInfo() {
     // Get client, books, clients from backend
-    const clientId = localStorage.getItem("selectedClientId");
+    const clientId = localStorage.getItem("selectedClient");
     
     if (!clientId) {
         console.error("No client ID found in localStorage.");
@@ -190,7 +190,7 @@ async function getClientReviews(clientId) {
                 // Attach the event listener to the button
                 const detailsButton = cardDiv.querySelector(`#btn-details-reviews-${review.bookId}`);
                 detailsButton.addEventListener("click", () => {
-                    localStorage.setItem("selectedBookId", review.bookId); 
+                    localStorage.setItem("selectedBook", review.bookId); 
                     window.open("info-book-manager.html", "_blank");
                 });
             });
@@ -239,7 +239,7 @@ function showBookPurchased(books) {
 
             const detailsButton = cardDiv.querySelector(`#details-purchased-${book.id}`);
             detailsButton.addEventListener("click", () => {
-                localStorage.setItem("selectedBookId", book.id); 
+                localStorage.setItem("selectedBook", book.bookId); 
                 window.open("info-book-manager.html", "_blank");
             });
         });
@@ -260,6 +260,34 @@ async function showClientData(clientInfo){
     document.querySelector("#client-username").innerHTML = `${clientInfo.username}`;
     document.querySelector("#client-password").innerHTML = `${clientInfo.password}`;
     document.querySelector("#client-id").innerHTML = `${clientInfo.id}`;
+}
+
+// Function to handle delete client action
+async function deleteClient(id) {
+    const agree = confirm("Are you sure you want to delete this client?");
+
+    if (agree) {
+        const url = `http://localhost:5223/api/Clients/delete-client/${id}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                alert("Client could not be deleted.");
+                return;
+            }
+
+           // Close the tab after deletion
+            window.close();
+        } catch (error) {
+            console.error("Client could not be deleted", error);
+        }
+    }
 }
 
 
