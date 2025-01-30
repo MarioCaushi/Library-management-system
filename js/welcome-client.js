@@ -17,22 +17,31 @@ const fetchUserInfo = async (id) => {
 
 const updateUserInfo = async (id, user) => {
   const url = `http://localhost:5223/api/Clients/edit-client/${id}`;
-  const response = await fetch(url, {
-    method: "PUT",
-    body: JSON.stringify({
-      Name: `${user.name}`,
-      LastName: `${user.lastName}`,
-      Email: `${user.email}`,
-      Birthday: `${user.birthday}`,
-      Username: `${user.username}`,
-      Password: `${user.password}`,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return response.json();
+  try {
+    const response = await fetch(url, {
+      method: "PUT",
+      body: JSON.stringify({
+        Name: `${user.name}`,
+        LastName: `${user.lastName}`,
+        Email: `${user.email}`,
+        Birthday: `${user.birthday}`,
+        Username: `${user.username}`,
+        Password: `${user.password}`,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);  // Throwing an error if the response is not successful
+    }
+    return true;  // Returning the response if it's successful
+  } catch (error) {
+    console.error('Failed to update user info:', error);  // Logging the error to the console
+    return false;  // Optionally, return null or a custom error object/message
+  }
 };
+
 
 const fetchBooks = async () => {
   const url = `http://localhost:5223/Browser/books`;
@@ -100,12 +109,14 @@ async function showClientInfo() {
       <strong>Password:</strong> 
       <span contenteditable="true" class="editable" id="password">${password}</span>
     </p>
-    <button class="save-button" onclick="saveChanges()">Save Changes</button>
+    <button class="save-button" id="save-button-client">Save Changes</button>
   </div>
     `;
 
   const logoutButton = document.getElementById("logout-button");
   logoutButton.addEventListener("click", logoutAction);
+
+  document.getElementById("save-button-client").addEventListener("click", saveChanges);
 }
 
 async function updateStats() {
@@ -117,22 +128,27 @@ async function updateStats() {
 }
 
 async function saveChanges() {
-  let user;
-  user.name = $(document.getElementById("name")).value;
-  user.lastName = $(document.getElementById("lastName")).value;
-  user.username = $(document.getElementById("username")).value;
-  user.email = $(document.getElementById("email")).value;
-  user.birthday = $(document.getElementById("birthday")).value;
-  user.password = $(document.getElementById("password")).value;
+  let user = {
+    name: document.getElementById("name").innerText,
+    lastName: document.getElementById("lastName").innerText,
+    username: document.getElementById("username").innerText,
+    email: document.getElementById("email").innerText,
+    birthday: document.getElementById("birthday").innerText,
+    password: document.getElementById("password").innerText
+  };
 
-  await updateUserInfo(userID, user);
+  const response = await updateUserInfo(userID, user);
+
+  if(response) {  // This checks if the HTTP status code is 200-299
+    alert("Changes made successfully");
+  } else {
+    alert("Something went wrong");
+  }
 }
 
 function navigateTo(page) {
   window.location.href = page;
 }
-
-export { navigateTo };
 
 function initializeWelcomePage() {
   showClientInfo();
@@ -140,3 +156,5 @@ function initializeWelcomePage() {
 }
 
 window.onload = initializeWelcomePage;
+
+export { navigateTo };
